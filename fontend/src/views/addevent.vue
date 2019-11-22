@@ -5,8 +5,8 @@
     </el-header>
     <el-main>
       <el-form ref="form" :model="formData" label-width="100px" label-position="right">
-        <el-form-item v-for="item in formData.content" :key="item.propName" :label="item.text">
-          <el-input v-model="item.content"></el-input>
+        <el-form-item v-for="item in sheetField" :key="item.propName" :label="item.text">
+          <el-input v-model="formData[item.propName]"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -24,33 +24,17 @@ import global from "./constant";
 export default {
   data() {
     return {
-      formData: {
-        content: []
-      }
+      formData: {},
+      sheetField: global.sheetField
     };
-  },
-  created() {
-    for (let i = 0; i < global.sheetField.length; i++) {
-      this.formData.content.push({
-        propName: global.sheetField[i].propName,
-        text: global.sheetField[i].text,
-        content: ""
-      });
-    }
   },
   methods: {
     onSubmit() {
-      // console.log("submit!");
-      this.$router.push({
-        path: "/",
-        query: { newData: this.formData.content }
-      });
+      this.$store.dispatch("addNewRule", { ...this.formData, status: true });
+      this.$router.push({ path: "/" });
     },
     goBack() {
-      this.$router.push({
-        path: "/",
-        query: {}
-      });
+      this.$router.push({ path: "/" });
     }
   }
 };

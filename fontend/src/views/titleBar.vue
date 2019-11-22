@@ -16,11 +16,13 @@
 
 <script>
 import Vue from "vue";
+import { clientCommand } from "../rpc";
+
 export default Vue.extend({
   component: "title-bar",
   methods: {
     controlBtn(buttonType) {
-      this.$ipcRenderer.send("controlBtn", buttonType);
+      clientCommand.systemButton(buttonType);
     }
   }
 });
@@ -29,15 +31,14 @@ export default Vue.extend({
 <style scoped>
 #title-bar {
   -webkit-app-region: drag;
-  height: 30px;
+  height: 35px;
   background-color: #2196f3;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(0, 0, 0, 0.14),
     0 2px 1px -1px rgba(0, 0, 0, 0.12);
-    
 }
 
 .title-text {
-  line-height: 30px;
+  line-height: 35px;
   padding-left: 0.7em;
   color: #fff;
   font-size: 0.8em;
@@ -51,8 +52,8 @@ export default Vue.extend({
   float: right;
   top: 0px;
   width: 45px;
-  height: 30px;
-  line-height: 30px;
+  height: 35px;
+  line-height: 35px;
   font-size: 1.1em;
   z-index: 999;
   transition: 0.5s;
@@ -66,8 +67,8 @@ export default Vue.extend({
   right: 0px;
   top: 0px;
   width: 45px;
-  height: 30px;
-  line-height: 30px;
+  height: 35px;
+  line-height: 35px;
   z-index: 999;
   font-size: 1.1em;
   transition: 0.5s;

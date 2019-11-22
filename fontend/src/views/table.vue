@@ -1,15 +1,14 @@
 <template>
   <el-container>
     <el-header style="text-align:center">
-      <!-- <font color="green" size="8" font-family="微软雅黑" >功能参数列表</font> -->
       <h1>功能参数列表</h1>
     </el-header>
 
     <el-main>
-      <el-button round type="primary" @click="addevent()">添加</el-button>
+      <el-button round type="primary" @click="addEvent()">添加</el-button>
       <el-button round type="primary" @click="temperature()">温度曲线图</el-button>
       <el-table
-        :data="tableData"
+        :data="getRules"
         border
         stripe
         style="margin-top:5px"
@@ -32,8 +31,6 @@
               circle
             ></el-button>
             <el-button v-else type="danger" icon="el-icon-close" size="mini" circle></el-button>
-            <!-- <el-button @click="deleteevent(scope.row)" type="text" size="small">删除</el-button> -->
-            <!-- <el-button @click="editevent(scope.row)" type="text" size="small">发送</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -43,69 +40,28 @@
 
 <script>
 import global from "./constant";
-
+import { mapGetters } from "vuex";
 export default {
+  computed: {
+    ...mapGetters(["getRules"])
+  },
+
   methods: {
-    deleteevent(row) {
-      console.log(row);
-    },
-    editevent(row) {
-      console.log(row);
-    },
-    addevent() {
-      this.$router.push({
-        path: "/addevent",
-        query: {}
-      });
+    addEvent() {
+      this.$router.push({ path: "/addEvent" });
     },
     temperature() {
-      this.$router.push({
-        path: "/temperature",
-        query: {}
-      });
-    },
-
-    saveConfig() {
-      this.$ipcRenderer.sendSync(
-        "saveConfigs",
-        JSON.stringify({
-          func: this.tableData
-        })
-      );
+      this.$router.push({ path: "/temperature" });
     }
   },
 
   data() {
     return {
-      sheetConfig: global.sheetField,
-      tableData: []
+      sheetConfig: global.sheetField
     };
   },
 
-  created() {
-    // this.$ipcRenderer.on("saveStatus", (event, arg) => {
-    //   if (arg === "fail") {
-    //     // vm.msgbox("错误", "保存设置失败");
-    //     alert("保存设置失败");
-    //   }
-    // });
-
-    console.log("fuck");
-    if (this.$route.query.newData != undefined) {
-      this.tableData.push({
-        alias: this.$route.query.newData[0].content,
-        regOffset: this.$route.query.newData[1].content,
-        funcCode: this.$route.query.newData[2].content,
-        dataType: this.$route.query.newData[3].content,
-        desc: this.$route.query.newData[4].content,
-        status: true
-      });
-      this.saveConfig();
-    }
-
-    let allConfigs = JSON.parse(this.$ipcRenderer.sendSync("loadConfigs", ""));
-    this.tableData = allConfigs.func;
-  },
+  created() {},
 
   mounted() {}
 };

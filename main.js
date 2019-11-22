@@ -8,12 +8,10 @@ const fs = require('fs');
 const configPath = app.getPath('userData');
 let mainWindow;
 
-const initConfig = '{ \
-                "func": [\
-                \
-                ]\
-                }\
-                ';
+const initConfig =
+    '{ \
+    "rules": []\
+}';
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -58,7 +56,6 @@ ipcMain.on('controlBtn', (event, arg) => {
             mainWindow.maximize();
         }
     }
-    // event.sender.send('asynchronous-reply', 'pong')//在main process里向web page发出message
 })
 
 ipcMain.on('acquireData', (event, arg) => {
@@ -68,14 +65,11 @@ ipcMain.on('acquireData', (event, arg) => {
 ipcMain.on('saveConfigs', (event, arg) => {
     fs.writeFile(configPath + '/userConfigs.json', arg, function (err) {
         if (err) {
-            // event.sender.send('saveStatus', 'fail');
-            event.returnValue='fail'
+            event.returnValue = 'fail'
             throw err;
         }
         event.returnValue = 'suc'
-        // event.sender.send('saveStatus', 'suc');
     });
-    console.log('saved config');
 });
 
 ipcMain.on('loadConfigs', (event, arg) => {
@@ -84,10 +78,9 @@ ipcMain.on('loadConfigs', (event, arg) => {
         data = fs.readFileSync(configPath + '/userConfigs.json', 'utf-8');
     } catch (err) {
         console.log(err);
-        let init_json_content = initConfig;
-        fs.writeFileSync(configPath + '/userConfigs.json', init_json_content);
-        data = init_json_content;
+        let initJsonContent = initConfig;
+        fs.writeFileSync(configPath + '/userConfigs.json', initJsonContent);
+        data = initJsonContent;
     }
     event.returnValue = data;
-    console.log('get config')
 });
