@@ -26,7 +26,7 @@ export default {
     ...mapGetters(["getMaximized", "getClientWidth", "getClientHeight"]),
     mainViewStyle() {
       return {
-        height: `${this.getClientHeight - 35}px`,
+        height: `${this.getClientHeight - 35 - 51}px`,
         width: `${this.getClientWidth}px`
       };
     }

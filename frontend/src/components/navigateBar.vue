@@ -10,7 +10,7 @@
 export default {
   data() {
     return {
-      activeIndex: "2"
+      activeIndex: "table"
     };
   },
   methods: {
@@ -20,3 +20,6 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+</style>
