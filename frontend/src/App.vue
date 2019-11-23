@@ -4,7 +4,9 @@
     <navigate-bar />
     <el-container>
       <el-scrollbar :style="mainViewStyle">
-        <router-view></router-view>
+        <transition name="slide-fade">
+          <router-view :style="routerViewStyle"></router-view>
+        </transition>
       </el-scrollbar>
     </el-container>
   </div>
@@ -27,6 +29,12 @@ export default {
     mainViewStyle() {
       return {
         height: `${this.getClientHeight - 35 - 40}px`,
+        width: `${this.getClientWidth}px`
+      };
+    },
+    routerViewStyle() {
+      return {
+        position:'absolute',
         width: `${this.getClientWidth}px`
       };
     }
@@ -58,5 +66,20 @@ body {
   overflow-y: hidden;
   overflow-x: hidden;
   user-select: none;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.1s ease;
+}
+.slide-fade-enter {
+  transform: translateX(10px);
+  opacity: 0;
+}
+.slide-fade-leave-to {
+  transform: translateX(-10px);
+  opacity: 0;
 }
 </style>
