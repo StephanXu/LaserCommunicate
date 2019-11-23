@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container class="table-page">
     <el-header style="text-align:center">
       <h1>功能参数列表</h1>
     </el-header>
@@ -59,10 +59,12 @@ export default {
     return {
       sheetConfig: global.sheetField
     };
-  },
-
-  created() {},
-
-  mounted() {}
+  }
 };
 </script>
+
+<style scoped>
+.table-page {
+  background-color: #fff;
+}
+</style>
