@@ -6,7 +6,7 @@ Vue.use(Vuex)
 let store = new Vuex.Store({
     state: {
         isMaximized: false,
-        isFocus: false,
+        isFocus: true,
         comRules: [],
         clientWidth: 0,
         clientHeight: 0

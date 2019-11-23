@@ -72,7 +72,6 @@ ipcMain.on('controlBtn', (event, arg) => {
             mainWindow.maximize();
         }
     }
-    console.log('change windows')
 })
 
 ipcMain.on('acquireData', (event, arg) => {

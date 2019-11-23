@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import AddEvent from '../views/addEvent'
+import AddRule from '../views/addRule'
 import Table from '../views/table'
 import Temperature from '../views/temperature'
 
@@ -19,7 +19,7 @@ const routes = [
   {
     path: '/addEvent',
     name: 'addEvent',
-    component: AddEvent
+    component: AddRule
   },
   {
     path: '/temperature',
