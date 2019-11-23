@@ -3,13 +3,14 @@
     <a class="title-text">仪表盘</a>
 
     <a class="control_btn shutdown_btn text-center" @click="controlBtn('shutdown');">
-      <font-awesome-icon :icon="['fa','times']" />
+      <i class="codicon codicon-chrome-close" style="line-height:35px"></i>
     </a>
     <a class="control_btn maximize_btn text-center" @click="controlBtn('max');">
-      <font-awesome-icon :icon="['fa','window-maximize']" />
+      <i v-if="getMaximized" class="codicon codicon-chrome-restore" style="line-height:35px"></i>
+      <i v-else class="codicon codicon-chrome-maximize" style="line-height:35px"></i>
     </a>
     <a class="control_btn minimize_btn text-center" @click="controlBtn('mini')">
-      <font-awesome-icon :icon="['fa','window-minimize']" />
+      <i class="codicon codicon-chrome-minimize" style="line-height:35px"></i>
     </a>
   </div>
 </template>
@@ -17,9 +18,14 @@
 <script>
 import Vue from "vue";
 import { clientCommand } from "../rpc";
-
+import {mapGetters} from 'vuex'
 export default Vue.extend({
   component: "title-bar",
+  computed:{
+    ...mapGetters([
+      'getMaximized'
+    ])
+  },
   methods: {
     controlBtn(buttonType) {
       clientCommand.systemButton(buttonType);
@@ -44,6 +50,10 @@ export default Vue.extend({
   font-size: 0.8em;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+.control-btn-icon{
+  line-height: 35px;
 }
 
 .control_btn {

@@ -1,4 +1,10 @@
+import store from '../store'
+
 const { ipcRenderer } = window.require("electron")
+
+ipcRenderer.on('windowMaximize', (event, message) => {
+    store.commit('setMaximized', message === 'maximize' ? true : false)
+})
 
 let settingsStore = {
     settings: {

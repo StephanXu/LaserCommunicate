@@ -5,11 +5,15 @@ import { settingsStore } from '../rpc'
 Vue.use(Vuex)
 let store = new Vuex.Store({
     state: {
+        isMaximized: false,
         comRules: []
     },
     getters: {
         getRules(state) {
-            return state.comRules;
+            return state.comRules
+        },
+        getMaximized(state) {
+            return state.isMaximized
         }
     },
     mutations: {
@@ -18,6 +22,9 @@ let store = new Vuex.Store({
         },
         setRules(state, rules) {
             state.comRules = rules
+        },
+        setMaximized(state, maximized) {
+            state.isMaximized = maximized
         }
     },
     actions: {

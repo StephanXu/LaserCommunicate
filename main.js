@@ -33,6 +33,14 @@ function createWindow() {
         mainWindow = null;
     })
 
+    mainWindow.on('maximize', () => {
+        mainWindow.webContents.send('windowMaximize', 'maximize')
+    })
+
+    mainWindow.on('unmaximize',()=>{
+        mainWindow.webContents.send('windowMaximize', 'unmaximize')
+    })
+
     mainWindow.openDevTools({
         mode: 'bottom'
     })
@@ -56,6 +64,7 @@ ipcMain.on('controlBtn', (event, arg) => {
             mainWindow.maximize();
         }
     }
+    console.log('change windows')
 })
 
 ipcMain.on('acquireData', (event, arg) => {
