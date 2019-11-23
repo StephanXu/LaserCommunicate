@@ -41,6 +41,14 @@ function createWindow() {
         mainWindow.webContents.send('windowMaximize', 'unmaximize')
     })
 
+    mainWindow.on('focus',()=>{
+        mainWindow.webContents.send('windowFocus', 'focus')
+    })
+
+    mainWindow.on('blur',()=>{
+        mainWindow.webContents.send('windowFocus', 'blur')
+    })
+
     mainWindow.openDevTools({
         mode: 'bottom'
     })

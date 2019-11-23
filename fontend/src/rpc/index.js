@@ -3,7 +3,11 @@ import store from '../store'
 const { ipcRenderer } = window.require("electron")
 
 ipcRenderer.on('windowMaximize', (event, message) => {
-    store.commit('setMaximized', message === 'maximize' ? true : false)
+    store.commit('setMaximized', message === 'maximize')
+})
+
+ipcRenderer.on('windowFocus', (event, message) => {
+    store.commit('setFocus', message === 'focus')
 })
 
 let settingsStore = {

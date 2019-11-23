@@ -6,22 +6,25 @@ Vue.use(Vuex)
 let store = new Vuex.Store({
     state: {
         isMaximized: false,
+        isFocus: false,
         comRules: [],
         clientWidth: 0,
         clientHeight: 0
     },
     getters: {
-        getRules(state) { return state.comRules },
-        getMaximized(state) { return state.isMaximized },
-        getClientWidth(state) { return state.clientWidth },
-        getClientHeight(state) { return state.clientHeight }
+        getRules: (state) => state.comRules,
+        getMaximized: (state) => state.isMaximized,
+        getClientWidth: (state) => state.clientWidth,
+        getClientHeight: (state) => state.clientHeight,
+        getFocus: (state) => state.isFocus
     },
     mutations: {
         addNewRule(state, rule) { state.comRules.push(rule) },
         setRules(state, rules) { state.comRules = rules },
         setMaximized(state, maximized) { state.isMaximized = maximized },
-        setClientWidth(state, width) { state.clientWidth = width; },
-        setClientHeight(state, height) { state.clientHeight = height; }
+        setClientWidth(state, width) { state.clientWidth = width },
+        setClientHeight(state, height) { state.clientHeight = height },
+        setFocus(state, isFocus) { state.isFocus = isFocus }
     },
     actions: {
         addNewRule(context, rule) {

@@ -1,17 +1,17 @@
 <template>
-  <div id="title-bar">
-    <div class="app-icon">
+  <div :class="barClass">
+    <div :class="{'app-icon':true,'window-lost-focus':!getFocus}">
       <i class="codicon codicon-list-flat" style="line-height:35px"></i>
     </div>
-    <a class="title-text">仪表盘</a>
+    <a :class="{'title-text':true,'window-lost-focus':!getFocus}">仪表盘</a>
     <div class="control-btn-container" :style="controlButtonContainerWidth">
-      <a class="control_btn minimize_btn text-center" @click="controlBtn('mini')">
+      <a :class="controlButtonClass" @click="controlBtn('mini')">
         <i class="codicon codicon-chrome-minimize" style="line-height:35px"></i>
       </a>
-      <a class="control_btn maximize_btn text-center" @click="controlBtn('max');">
+      <a :class="controlButtonClass" @click="controlBtn('max');">
         <i :class="maximizeButtonClass" style="line-height:35px"></i>
       </a>
-      <a class="control_btn shutdown_btn text-center" @click="controlBtn('shutdown');">
+      <a :class="{...controlButtonClass,'control-btn-close':true}" @click="controlBtn('shutdown');">
         <i class="codicon codicon-chrome-close" style="line-height:35px"></i>
       </a>
     </div>
@@ -31,7 +31,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters(["getMaximized", "getClientWidth"]),
+    ...mapGetters(["getMaximized", "getClientWidth", "getFocus"]),
     controlButtonContainerWidth() {
       return {
         width: `${this.getClientWidth - 100 - 35}px`
@@ -42,6 +42,18 @@ export default Vue.extend({
         codicon: true,
         "codicon-chrome-restore": this.getMaximized,
         "codicon-chrome-maximize": !this.getMaximized
+      };
+    },
+    controlButtonClass() {
+      return {
+        "control-btn": true,
+        "window-lost-focus": !this.getFocus
+      };
+    },
+    barClass() {
+      return {
+        "title-bar": true,
+        "title-bar-window-lost-focus": !this.getFocus
       };
     }
   },
@@ -54,12 +66,14 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-#title-bar {
+.title-bar {
   -webkit-app-region: drag;
   height: 35px;
   background-color: #2b579a;
   display: flex;
   display: -webkit-flex;
+  color: #000;
+  transition: 0.3s;
 }
 
 .title-text {
@@ -69,6 +83,7 @@ export default Vue.extend({
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   width: 100px;
+  transition: 0.3s;
 }
 
 .app-icon {
@@ -76,6 +91,7 @@ export default Vue.extend({
   color: #fff;
   width: 35px;
   text-align: center;
+  transition: 0.3s;
 }
 
 .control-btn-container {
@@ -84,7 +100,7 @@ export default Vue.extend({
   justify-content: flex-end;
 }
 
-.control_btn {
+.control-btn {
   color: rgb(255, 255, 255);
   position: relative;
   top: 0px;
@@ -96,9 +112,11 @@ export default Vue.extend({
   transition: 0.5s;
   -webkit-app-region: no-drag;
   display: inline-block;
+  /* background-color: #2b579a; */
+  text-align: center;
 }
 
-.control_btn:hover {
+.control-btn:hover {
   color: rgb(255, 255, 255);
   position: relative;
   right: 0px;
@@ -111,43 +129,28 @@ export default Vue.extend({
   transition: 0.5s;
   -webkit-app-region: no-drag;
   display: inline-block;
-}
-
-.shutdown_btn {
-  background-color: #2b579a;
-  /* right: 0px; */
-}
-
-.shutdown_btn:hover {
-  background: #e81123;
-  /* right: 0px; */
-}
-
-.maximize_btn {
-  background-color: #2b579a;
-  /* right: 0px; */
+  background-color: #124078;
   font-size: 0.9em;
-}
-
-.maximize_btn:hover {
-  background: #124078;
-  /* right: 0px; */
-  font-size: 0.9em;
-}
-
-.minimize_btn {
-  background-color: #2b579a;
-  /* right: 0px; */
-  font-size: 0.9em;
-}
-
-.minimize_btn:hover {
-  background: #124078;
-  /* right: 0px; */
-  font-size: 0.9em;
-}
-
-.text-center {
   text-align: center;
 }
+
+.window-lost-focus {
+  color: #7b7b7b;
+  transition: 0.3s;
+}
+
+.window-lost-focus:hover {
+  background-color: #c6c6c6;
+  transition: 0.3s;
+}
+
+.control-btn-close:hover {
+  background-color: #e81123;
+}
+
+.title-bar-window-lost-focus{
+  background-color: #dddddd;
+  transition: 0.3s;
+}
+
 </style>
