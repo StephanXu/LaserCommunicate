@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { settingsStore } from '../rpc'
+import {
+    settingsStore
+} from '../rpc'
 
 Vue.use(Vuex)
 let store = new Vuex.Store({
@@ -19,12 +21,27 @@ let store = new Vuex.Store({
         getFocus: (state) => state.isFocus
     },
     mutations: {
-        addNewRule(state, rule) { state.comRules.push(rule) },
-        setRules(state, rules) { state.comRules = rules },
-        setMaximized(state, maximized) { state.isMaximized = maximized },
-        setClientWidth(state, width) { state.clientWidth = width },
-        setClientHeight(state, height) { state.clientHeight = height },
-        setFocus(state, isFocus) { state.isFocus = isFocus }
+        addNewRule(state, rule) {
+            state.comRules.push(rule)
+        },
+        removeRule(state, rule) {
+            state.comRules.splice(state.comRules.findIndex((val) => val === rule), 1)
+        },
+        setRules(state, rules) {
+            state.comRules = rules
+        },
+        setMaximized(state, maximized) {
+            state.isMaximized = maximized
+        },
+        setClientWidth(state, width) {
+            state.clientWidth = width
+        },
+        setClientHeight(state, height) {
+            state.clientHeight = height
+        },
+        setFocus(state, isFocus) {
+            state.isFocus = isFocus
+        }
     },
     actions: {
         addNewRule(context, rule) {
@@ -33,6 +50,10 @@ let store = new Vuex.Store({
         },
         loadRules(context) {
             context.commit('setRules', settingsStore.loadRules())
+        },
+        removeRule(context, rule) {
+            context.commit('removeRule',rule)
+            settingsStore.setRules(context.state.comRules)
         }
     }
 })

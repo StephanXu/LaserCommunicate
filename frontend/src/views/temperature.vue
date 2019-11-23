@@ -3,89 +3,94 @@
     <el-header>
       <el-page-header @back="goBack" content="温度变化曲线" style="margin-top:20px"></el-page-header>
     </el-header>
-    <el-main>
+    <el-container>
       <div style="align:center;">
-        <div id="myChart" :style="{width: '95vw', height: '60vh'}"></div>
+        <div id="myChart" :style="graphStyle"></div>
       </div>
-    </el-main>
+    </el-container>
   </el-container>
 </template>
 <script>
 import { setInterval } from "timers";
+import { mapGetters } from "vuex";
+import http from "../http";
+
+Date.prototype.Format = function(fmt) {
+  //author: meizz
+  var o = {
+    "M+": this.getMonth() + 1, //月份
+    "d+": this.getDate(), //日
+    "h+": this.getHours(), //小时
+    "m+": this.getMinutes(), //分
+    "s+": this.getSeconds(), //秒
+    "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+    S: this.getMilliseconds() //毫秒
+  };
+  if (/(y+)/.test(fmt))
+    fmt = fmt.replace(
+      RegExp.$1,
+      (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+    );
+  for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt))
+      fmt = fmt.replace(
+        RegExp.$1,
+        RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
+      );
+  return fmt;
+};
+
 export default {
+  computed: {
+    ...mapGetters(["getClientWidth", "getClientHeight"]),
+    graphStyle() {
+      return {
+        width: `${this.getClientWidth}px`,
+        height: `${this.getClientHeight - 200}px`
+      };
+    }
+  },
   data() {
     return {
+      graphData: [],
+      graphTime: [],
       option: {
         xAxis: {
           type: "category",
-          data: [
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat",
-            "Sun",
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat",
-            "Sun",
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat",
-            "Sun",
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat",
-            "Sun"
-          ]
+          boundaryGap: false,
+          minInterval: 1,
+          data: []
         },
         yAxis: {
-          type: "value"
+          type: "value",
+          boundaryGap: [0, "100%"]
         },
         series: [
           {
-            data: [
-              1820,
-              1932,
-              1901,
-              1934,
-              1290,
-              1330,
-              1320,
-              820,
-              932,
-              901,
-              934,
-              1290,
-              1330,
-              1320,
-              820,
-              932,
-              901,
-              934,
-              1290,
-              1330,
-              1320,
-              820,
-              932,
-              901,
-              934,
-              1290,
-              1330,
-              1320
-            ],
+            data: [],
             type: "line",
-            smooth: true
+            itemStyle: {
+              color: "rgb(255, 70, 131)"
+            },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "rgb(255, 158, 68)" // color at 0% position
+                  },
+                  {
+                    offset: 1,
+                    color: "rgb(255, 70, 131)" // color at 100% position
+                  }
+                ]
+              }
+            }
           }
         ]
       }
@@ -98,14 +103,20 @@ export default {
     drawLine() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("myChart"));
-      // 绘制图表
       myChart.setOption(this.option);
-      let temdata = this.option.series[0].data;
+      const _this = this;
       setInterval(() => {
-        var a = temdata.splice(0, 1);
-        temdata.push(a[0]);
-        myChart.setOption(this.option);
-      }, 500);
+        _this.graphData.push(http.LaserQuery.getTemperature().result);
+        _this.graphTime.push(new Date().Format("hh:mm:ss"));
+        if (_this.graphData.length > 30) {
+          _this.graphData.shift();
+          _this.graphTime.shift();
+        }
+        _this.option.series[0].data = _this.graphData;
+        _this.option.xAxis.data = _this.graphTime;
+        myChart.setOption(_this.option);
+        myChart.resize()
+      }, 1000);
     },
     goBack() {
       this.$router.push({

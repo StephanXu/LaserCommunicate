@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <title-bar />
-    <el-container style="z-index:-1">
+    <navigate-bar />
+    <el-container>
       <el-scrollbar :style="mainViewStyle">
         <router-view></router-view>
       </el-scrollbar>
@@ -10,11 +11,13 @@
 </template>
 
 <script>
-import titleBar from "./views/titleBar";
+import TitleBar from "./components/titleBar";
+import NavigateBar from "./components/navigateBar";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    "title-bar": titleBar
+    "title-bar": TitleBar,
+    "navigate-bar": NavigateBar
   },
   data() {
     return {};
@@ -55,5 +58,4 @@ body {
   overflow-y: hidden;
   overflow-x: hidden;
 }
-
 </style>
