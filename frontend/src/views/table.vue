@@ -7,9 +7,9 @@
         </el-col>
         <el-col :span="12">
           <div class="table-control-button-container">
-            <el-button round @click="addRule()" icon="el-icon-plus">添加</el-button>
-            <el-button round @click="deleteEvent()" icon="el-icon-plus">删除</el-button>
-            <el-button round @click="temperature()">温度曲线图</el-button>
+            <el-button @click="addRule()" icon="el-icon-plus">添加</el-button>
+            <el-button @click="deleteEvent()" icon="el-icon-delete">删除</el-button>
+            <el-button @click="temperature()" icon="el-icon-data-analysis">温度曲线图</el-button>
           </div>
         </el-col>
       </el-row>
@@ -21,7 +21,7 @@
         stripe
         highlight-current-row
         @current-change="handleCurrentChange"
-        style="margin-top:5px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
+        style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
         ref="multipleTable"
         tooltip-effect="dark"
       >
@@ -31,7 +31,7 @@
           :prop="item.propName"
           :label="item.text"
         ></el-table-column>
-        <el-table-column label="状态" width="50">
+        <el-table-column label="状态" width="52">
           <template slot-scope="scope">
             <el-button
               v-if="scope.row.status"
@@ -86,7 +86,6 @@ export default {
     },
     handleAddRule() {
       this.isAddRuleVisile = false;
-      console.log("got it");
     }
   },
 
@@ -111,4 +110,5 @@ export default {
   align-items: center;
   height: 75px;
 }
+
 </style>

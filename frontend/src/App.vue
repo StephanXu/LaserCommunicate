@@ -26,7 +26,7 @@ export default {
     ...mapGetters(["getMaximized", "getClientWidth", "getClientHeight"]),
     mainViewStyle() {
       return {
-        height: `${this.getClientHeight - 35 - 51}px`,
+        height: `${this.getClientHeight - 35 - 40}px`,
         width: `${this.getClientWidth}px`
       };
     }
@@ -57,5 +57,6 @@ body {
   margin: 0px;
   overflow-y: hidden;
   overflow-x: hidden;
+  user-select: none;
 }
 </style>

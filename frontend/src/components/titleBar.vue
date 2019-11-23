@@ -3,7 +3,7 @@
     <div :class="{'app-icon':true,'window-lost-focus':!getFocus}">
       <i class="codicon codicon-list-flat" style="line-height:35px"></i>
     </div>
-    <a :class="{'title-text':true,'window-lost-focus':!getFocus}">仪表盘</a>
+    <a :class="{'title-text':true,'window-lost-focus':!getFocus}">光能仪表盘</a>
     <div class="control-btn-container" :style="controlButtonContainerWidth">
       <a :class="controlButtonClass" @click="controlBtn('mini')">
         <i class="codicon codicon-chrome-minimize" style="line-height:35px"></i>
@@ -34,7 +34,7 @@ export default Vue.extend({
     ...mapGetters(["getMaximized", "getClientWidth", "getFocus"]),
     controlButtonContainerWidth() {
       return {
-        width: `${this.getClientWidth - 100 - 35}px`
+        width: `${this.getClientWidth - 200 - 35}px`
       };
     },
     maximizeButtonClass() {
@@ -82,7 +82,7 @@ export default Vue.extend({
   font-size: 0.8em;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-  width: 100px;
+  width: 200px;
   transition: 0.3s;
 }
 

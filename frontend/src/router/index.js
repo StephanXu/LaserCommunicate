@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import AddRule from '../views/addRule'
 import Table from '../views/table'
 import Temperature from '../views/temperature'
-import HelloWorld from '../components/HelloWorld'
+import About from '../components/about'
 
 Vue.use(VueRouter)
 
@@ -29,7 +29,7 @@ const routes = [{
   {
     path: '/about',
     name: 'about',
-    component: HelloWorld
+    component: About
   }
 
 ]
