@@ -17,11 +17,7 @@
     <el-main>
       <el-table
         :data="getRules"
-        border
-        stripe
-        highlight-current-row
         @current-change="handleCurrentChange"
-        style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
         ref="multipleTable"
         tooltip-effect="dark"
       >
