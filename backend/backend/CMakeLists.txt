@@ -5,6 +5,7 @@ cmake_minimum_required (VERSION 3.8)
 
 find_package(cpprestsdk CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
+find_package(libmodbus CONFIG REQUIRED)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 aux_source_directory(
@@ -16,6 +17,7 @@ add_executable (backend ${DIR_SRC})
 # TODO: 如有需要，请添加测试并安装目标。
 target_compile_features(backend PUBLIC cxx_std_11)
 target_link_libraries(backend PRIVATE
+	modbus
 	fmt::fmt
 	cpprestsdk::cpprest
 	cpprestsdk::cpprestsdk_zlib_internal

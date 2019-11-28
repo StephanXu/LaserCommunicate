@@ -4,6 +4,8 @@
 #include <cpprest/http_listener.h>
 #include <cpprest/http_msg.h>
 
+#include "Modbus.hpp"
+
 #include <iostream>
 #include <iterator>
 #include <string>
