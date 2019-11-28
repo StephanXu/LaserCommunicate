@@ -18,8 +18,8 @@ std::unique_ptr<SerialController> serialController{};
 
 int main()
 {
-	utility::string_t port = U("34500");
-	utility::string_t addr = U("http://127.0.0.1:");
+	utility::string_t port = U("8080");
+	utility::string_t addr = U("http://*:");
 	utility::string_t path = U("/api");
 	addr.append(port).append(path);
 	serialController = std::make_unique<SerialController>(addr);

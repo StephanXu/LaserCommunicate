@@ -31,6 +31,7 @@ public:
 	pplx::task<void>open() { return m_Listener.open(); }
 	pplx::task<void>close() { return m_Listener.close(); }
 private:
+
 	void Get(http_request message)
 	{
 		message.extract_json().then(
@@ -38,6 +39,7 @@ private:
 				try
 				{
 					auto res = t.get();
+					
 					ucout << res.to_string() << std::endl;
 					message.reply(status_codes::OK, "ok", "text");
 				}
