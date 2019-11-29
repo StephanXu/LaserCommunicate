@@ -6,6 +6,7 @@ cmake_minimum_required (VERSION 3.8)
 find_package(cpprestsdk CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(libmodbus CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 aux_source_directory(
@@ -20,6 +21,7 @@ target_link_libraries(backend PRIVATE
 	bcrypt
 	modbus
 	fmt::fmt
+	spdlog::spdlog
 	cpprestsdk::cpprest
 	cpprestsdk::cpprestsdk_zlib_internal
 	cpprestsdk::cpprestsdk_boost_internal 

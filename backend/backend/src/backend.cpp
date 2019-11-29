@@ -2,10 +2,12 @@
 //
 
 #include "backend.h"
-
 #include <cpprest/http_client.h>
-#include <cpprest/filestream.h>
-#include "SerialController.hpp"
+
+#include "InterfaceController.hpp"
+#include "SerialComController.hpp"
+#include "DI.hpp"
+
 #include <memory>
 
 using namespace utility;                    // Common utilities like string conversions
@@ -14,22 +16,48 @@ using namespace web::http;                  // Common HTTP functionality
 using namespace web::http::client;          // HTTP client features
 using namespace concurrency::streams;       // Asynchronous streams
 
-std::unique_ptr<SerialController> serialController{};
+std::unique_ptr<StaticConfiguration> MakeStaticConfiguration()
+{
+	return std::make_unique<StaticConfiguration>();
+}
+
+std::unique_ptr<UartModbus> MakeUartModbus()
+{
+	return std::make_unique<UartModbus>();
+}
+
+void InitLog()
+{
+	auto console = spdlog::stderr_color_mt("console");
+	spdlog::set_default_logger(console);
+	spdlog::set_pattern("[%T.%e] [%-5t] %^[%l]%$  %v");
+	spdlog::set_level(spdlog::level::info);
+}
 
 int main()
 {
-	utility::string_t port = L"34500";
-	utility::string_t addr = L"http://localhost:";
-	utility::string_t path = L"/api/interface";
-	addr.append(port).append(path);
-	serialController = std::make_unique<SerialController>(addr);
-	serialController->open().wait();
+	InitLog();
 
-	ucout << utility::string_t(L"Listening for requests at: ") << addr << std::endl;
-	
+	DIConfiguration di;
+	di.Add(MakeStaticConfiguration);
+	di.Add(MakeUartModbus);
+	di.Add(InterfaceController::MakeInterfaceController);
+	di.Add(SerialComController::MakeSerialComController);
+
+	auto injector = di.BuildInjector();
+	injector.GetInstance<InterfaceController>()->open().wait();
+	injector.GetInstance<SerialComController>()->open().wait();
+
+	auto config = injector.GetInstance<StaticConfiguration>();
+	//ucout << utility::string_t(L"Listening for requests at: ") << config->addr + config->port << std::endl;
+	spdlog::info("Listening for requests at: {}{}",
+				 conversions::to_utf8string(config->addr),
+				 conversions::to_utf8string(config->port));
+
 	std::string line;
 	std::getline(std::cin, line);
 
-	serialController->close().wait();
+	injector.GetInstance<InterfaceController>()->close().wait();
+	injector.GetInstance<SerialComController>()->close().wait();
 	return 0;
 }

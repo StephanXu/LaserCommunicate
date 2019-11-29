@@ -7,11 +7,11 @@
 
 #include <string>
 #include <functional>
-
+#include <memory>
 /**
  * @class	UartModbus
  *
- * @brief	´®¿ÚModbusĞ­Òé·â×°ÊµÏÖ£¨·ÇÏß³Ì°²È«£©
+ * @brief	ä¸²å£Modbusåè®®å°è£…å®ç°ï¼ˆéçº¿ç¨‹å®‰å…¨ï¼‰
  *
  * @author	Xu Zihan
  * @date	2019/11/29
@@ -22,30 +22,30 @@ public:
 	/**
 	 * @enum	Parity
 	 *
-	 * @brief	Ğ£Ñé·½Ê½£¨ÓÃÓÚ¹¹Ôìº¯Êı»òOpenº¯Êı£©
+	 * @brief	æ ¡éªŒæ–¹å¼ï¼ˆç”¨äºæ„é€ å‡½æ•°æˆ–Openå‡½æ•°ï¼‰
 	 */
 	enum Parity
 	{
-		NoPariDty = 'N', ///< ÎŞĞ£Ñé
-		OddParity = 'O', ///< ÆæĞ£Ñé
-		EvenParity = 'E',///< Å¼Ğ£Ñé
+		NoPariDty = 'N', ///< æ— æ ¡éªŒ
+		OddParity = 'O', ///< å¥‡æ ¡éªŒ
+		EvenParity = 'E',///< å¶æ ¡éªŒ
 	};
 
 	/**
 	 * @enum	StopBit
 	 *
-	 * @brief	Í£Ö¹Î»£¨ÓÃÓÚ¹¹Ôìº¯Êı»òOpenº¯Êı£©
+	 * @brief	åœæ­¢ä½ï¼ˆç”¨äºæ„é€ å‡½æ•°æˆ–Openå‡½æ•°ï¼‰
 	 */
 	enum StopBit
 	{
-		OneStopBit = 0, ///< 1Î»Í£Ö¹Î»
-		TwoStopBits = 2 ///< 2Î»Í£Ö¹Î»
+		OneStopBit = 0, ///< 1ä½åœæ­¢ä½
+		TwoStopBits = 2 ///< 2ä½åœæ­¢ä½
 	};
 
 	/**
 	 * @enum	FloatByteOrder
 	 *
-	 * @brief	¸¡µãÊı×Ö½ÚË³Ğò
+	 * @brief	æµ®ç‚¹æ•°å­—èŠ‚é¡ºåº
 	 */
 	enum class FloatByteOrder
 	{
@@ -119,13 +119,13 @@ public:
 	 * @author	Xu Zihan
 	 * @date	2019/11/29
 	 *
-	 * @param	device		  	portname(´®¿ÚÃû): ÔÚWindowsÏÂÊÇ"COM1""COM2"µÈ£¬ÔÚLinuxÏÂÊÇ"/dev/ttyS1"µÈ.
-	 * @param	baudrate	  	baudrate(²¨ÌØÂÊ): 9600¡¢19200¡¢38400¡¢43000¡¢56000¡¢57600¡¢115200.
-	 * @param	parity		  	parity(Ğ£ÑéÎ»): 0ÎªÎŞĞ£Ñé£¬1ÎªÆæĞ£Ñé£¬2ÎªÅ¼Ğ£Ñé£¬3Îª±ê¼ÇĞ£Ñé(½öÊÊÓÃÓÚwindows)
-	 * @param	dataBit		  	databit(Êı¾İÎ»): 4-8(windows),5-8(linux)£¬Í¨³£Îª8Î».
-	 * @param	stopBit		  	stopbit(Í£Ö¹Î»): 1Îª1Î»Í£Ö¹Î»£¬2Îª2Î»Í£Ö¹Î»,3Îª1.5Î»Í£Ö¹Î».
+	 * @param	device		  	portname(ä¸²å£å): åœ¨Windowsä¸‹æ˜¯"COM1""COM2"ç­‰ï¼Œåœ¨Linuxä¸‹æ˜¯"/dev/ttyS1"ç­‰.
+	 * @param	baudrate	  	baudrate(æ³¢ç‰¹ç‡): 9600ã€19200ã€38400ã€43000ã€56000ã€57600ã€115200.
+	 * @param	parity		  	parity(æ ¡éªŒä½): 0ä¸ºæ— æ ¡éªŒï¼Œ1ä¸ºå¥‡æ ¡éªŒï¼Œ2ä¸ºå¶æ ¡éªŒï¼Œ3ä¸ºæ ‡è®°æ ¡éªŒ(ä»…é€‚ç”¨äºwindows)
+	 * @param	dataBit		  	databit(æ•°æ®ä½): 4-8(windows),5-8(linux)ï¼Œé€šå¸¸ä¸º8ä½.
+	 * @param	stopBit		  	stopbit(åœæ­¢ä½): 1ä¸º1ä½åœæ­¢ä½ï¼Œ2ä¸º2ä½åœæ­¢ä½,3ä¸º1.5ä½åœæ­¢ä½.
 	 * @param	slaveId		  	Identifier for the slave.
-	 * @param	floatByteOrder	(Optional) ¸¡µã×Ö½ÚÊıË³Ğò.
+	 * @param	floatByteOrder	(Optional) æµ®ç‚¹å­—èŠ‚æ•°é¡ºåº.
 	 */
 	UartModbus(const std::string device,
 			   int baudrate,
@@ -147,7 +147,7 @@ public:
 	 * @author	Xu Zihan
 	 * @date	2019/11/29
 	 *
-	 * @param	floatByteOrder	(Optional) ¸¡µã×Ö½ÚÊıË³Ğò.
+	 * @param	floatByteOrder	(Optional) æµ®ç‚¹å­—èŠ‚æ•°é¡ºåº.
 	 */
 	UartModbus(FloatByteOrder floatByteOrder = FloatByteOrder::DCBA) noexcept
 	{
@@ -172,20 +172,13 @@ public:
 
 	~UartModbus()
 	{
-		if (m_IsValid)
-		{
-			modbus_close(m_Connection);
-		}
-		if (m_Connection)
-		{
-			modbus_free(m_Connection);
-		}
+		Close();
 	}
 
 	/**
 	 * @fn	bool UartModbus::Open(const std::string device, int baudrate, Parity parity, int dataBit, StopBit stopBit, int slaveId)
 	 *
-	 * @brief	½¨Á¢Á¬½Ó,³É¹¦·µ»Øtrue£¬Ê§°Ü·µ»Øfalse
+	 * @brief	å»ºç«‹è¿æ¥,æˆåŠŸè¿”å›trueï¼Œå¤±è´¥è¿”å›false
 	 *
 	 * @author	Xu Zihan
 	 * @date	2019/11/29
@@ -193,11 +186,11 @@ public:
 	 * @exception	ModbusConnectError	Raised when the Modbus Connect error condition occurs.
 	 * @exception	std::runtime_error	Raised when a runtime error condition occurs.
 	 *
-	 * @param	device  	portname(´®¿ÚÃû): ÔÚWindowsÏÂÊÇ"COM1""COM2"µÈ£¬ÔÚLinuxÏÂÊÇ"/dev/ttyS1"µÈ.
-	 * @param	baudrate	baudrate(²¨ÌØÂÊ): 9600¡¢19200¡¢38400¡¢43000¡¢56000¡¢57600¡¢115200.
-	 * @param	parity  	parity(Ğ£ÑéÎ»): 0ÎªÎŞĞ£Ñé£¬1ÎªÆæĞ£Ñé£¬2ÎªÅ¼Ğ£Ñé£¬3Îª±ê¼ÇĞ£Ñé(½öÊÊÓÃÓÚwindows)
-	 * @param	dataBit 	databit(Êı¾İÎ»): 4-8(windows),5-8(linux)£¬Í¨³£Îª8Î».
-	 * @param	stopBit 	stopbit(Í£Ö¹Î»): 1Îª1Î»Í£Ö¹Î»£¬2Îª2Î»Í£Ö¹Î»,3Îª1.5Î»Í£Ö¹Î».
+	 * @param	device  	portname(ä¸²å£å): åœ¨Windowsä¸‹æ˜¯"COM1""COM2"ç­‰ï¼Œåœ¨Linuxä¸‹æ˜¯"/dev/ttyS1"ç­‰.
+	 * @param	baudrate	baudrate(æ³¢ç‰¹ç‡): 9600ã€19200ã€38400ã€43000ã€56000ã€57600ã€115200.
+	 * @param	parity  	parity(æ ¡éªŒä½): 0ä¸ºæ— æ ¡éªŒï¼Œ1ä¸ºå¥‡æ ¡éªŒï¼Œ2ä¸ºå¶æ ¡éªŒï¼Œ3ä¸ºæ ‡è®°æ ¡éªŒ(ä»…é€‚ç”¨äºwindows)
+	 * @param	dataBit 	databit(æ•°æ®ä½): 4-8(windows),5-8(linux)ï¼Œé€šå¸¸ä¸º8ä½.
+	 * @param	stopBit 	stopbit(åœæ­¢ä½): 1ä¸º1ä½åœæ­¢ä½ï¼Œ2ä¸º2ä½åœæ­¢ä½,3ä¸º1.5ä½åœæ­¢ä½.
 	 * @param	slaveId 	Identifier for the slave.
 	 *
 	 * @returns	True if it succeeds, false if it fails.
@@ -231,14 +224,36 @@ public:
 	}
 
 	/**
+	 * @fn	void UartModbus::Close()
+	 *
+	 * @brief	å…³é—­è¿æ¥ï¼ˆå¦‚å­˜åœ¨ï¼‰å¹¶é‡Šæ”¾èµ„æºï¼ˆå¦‚å­˜åœ¨ï¼‰
+	 *
+	 * @author	Xu Zihan
+	 * @date	2019/11/30
+	 */
+	void Close()
+	{
+		if (m_IsValid)
+		{
+			modbus_close(m_Connection);
+			m_IsValid = false;
+		}
+		if (m_Connection)
+		{
+			modbus_free(m_Connection);
+			m_Connection = nullptr;
+		}
+	}
+
+	/**
 	 * @fn	void UartModbus::SetFloatByteOrder(FloatByteOrder floatByteOrder) noexcept
 	 *
-	 * @brief	ÉèÖÃ¸¡µãÊı×Ö½ÚË³Ğò
+	 * @brief	è®¾ç½®æµ®ç‚¹æ•°å­—èŠ‚é¡ºåº
 	 *
 	 * @author	Xu Zihan
 	 * @date	2019/11/29
 	 *
-	 * @param	floatByteOrder	¸¡µãÊı×Ö½ÚË³Ğò.
+	 * @param	floatByteOrder	æµ®ç‚¹æ•°å­—èŠ‚é¡ºåº.
 	 */
 	void SetFloatByteOrder(FloatByteOrder floatByteOrder) noexcept
 	{
@@ -266,14 +281,14 @@ public:
 	/**
 	 * @fn	template<typename T> T UartModbus::ReadRegisters(const unsigned int registerAddress)
 	 *
-	 * @brief	¶Á¶à¸ö16Î»¼Ä´æÆ÷£¨È¡¾öÓÚ·µ»ØÀàĞÍ£©
+	 * @brief	è¯»å¤šä¸ª16ä½å¯„å­˜å™¨ï¼ˆå–å†³äºè¿”å›ç±»å‹ï¼‰
 	 *
 	 * @exception	IOError	Raised when an I/O error condition occurs.
 	 *
-	 * @tparam	T	·µ»ØÀàĞÍ£¨½è´ËÍÆµ¼¶Á¼Ä´æÆ÷µÄÊıÁ¿£©.
-	 * @param	registerAddress	¼Ä´æÆ÷µØÖ·.
+	 * @tparam	T	è¿”å›ç±»å‹ï¼ˆå€Ÿæ­¤æ¨å¯¼è¯»å¯„å­˜å™¨çš„æ•°é‡ï¼‰.
+	 * @param	registerAddress	å¯„å­˜å™¨åœ°å€.
 	 *
-	 * @returns	¼Ä´æÆ÷Öµ.
+	 * @returns	å¯„å­˜å™¨å€¼.
 	 */
 	template<typename T>
 	T ReadRegisters(const unsigned int registerAddress)
@@ -293,13 +308,13 @@ public:
 	/**
 	 * @fn	template<typename T> void UartModbus::WriteRegisters(unsigned int registerAddress, T value)
 	 *
-	 * @brief	Ğ´¶à¸ö16Î»¼Ä´æÆ÷£¨È¡¾öÓÚĞ´ÈëÀàĞÍ£©
+	 * @brief	å†™å¤šä¸ª16ä½å¯„å­˜å™¨ï¼ˆå–å†³äºå†™å…¥ç±»å‹ï¼‰
 	 *
 	 * @exception	IOError	Raised when an I/O error condition occurs.
 	 *
-	 * @tparam	T	Ğ´ÈëÀàĞÍ£¨½è´ËÍÆµ¼Ğ´¼Ä´æÆ÷µÄÊıÁ¿£©.
-	 * @param	registerAddress	¼Ä´æÆ÷µØÖ·.
-	 * @param	value		   	½«Ğ´ÈëµÄÖµ.
+	 * @tparam	T	å†™å…¥ç±»å‹ï¼ˆå€Ÿæ­¤æ¨å¯¼å†™å¯„å­˜å™¨çš„æ•°é‡ï¼‰.
+	 * @param	registerAddress	å¯„å­˜å™¨åœ°å€.
+	 * @param	value		   	å°†å†™å…¥çš„å€¼.
 	 */
 	template<typename T>
 	void WriteRegisters(unsigned int registerAddress, T value)
@@ -324,15 +339,15 @@ private:
 	/**
 	 * @fn	template<typename RetT, typename BufferType> inline RetT UartModbus::GetNumFromBuffer(const BufferType* buffer, size_t length)
 	 *
-	 * @brief	´Ó»º³åÇøÖĞ¶ÁÈ¡Êı¾İ£¨Ğ¡¶Ë£© 
-	 * 			ÀıÈçuint8_tµÄ»º³åÇø{0x01,0x02,0x03,0x04}¶ÁÈ¡µ½uint32_tÊı¾İÖĞÓ¦Îª0x04030201
+	 * @brief	ä»ç¼“å†²åŒºä¸­è¯»å–æ•°æ®ï¼ˆå°ç«¯ï¼‰ 
+	 * 			ä¾‹å¦‚uint8_tçš„ç¼“å†²åŒº{0x01,0x02,0x03,0x04}è¯»å–åˆ°uint32_tæ•°æ®ä¸­åº”ä¸º0x04030201
 	 *
-	 * @tparam	RetT	  	·µ»ØÀàĞÍ.
-	 * @tparam	BufferType	»º³åÇøÀàĞÍ.
-	 * @param	buffer	The »º³åÇø.
-	 * @param	length	The »º³åÇø³¤¶È.
+	 * @tparam	RetT	  	è¿”å›ç±»å‹.
+	 * @tparam	BufferType	ç¼“å†²åŒºç±»å‹.
+	 * @param	buffer	The ç¼“å†²åŒº.
+	 * @param	length	The ç¼“å†²åŒºé•¿åº¦.
 	 *
-	 * @returns	´Ó»º³åÇøÖĞ¶ÁÈ¡µÄÖµ.
+	 * @returns	ä»ç¼“å†²åŒºä¸­è¯»å–çš„å€¼.
 	 */
 	template<typename RetT, typename BufferType>
 	inline RetT GetNumFromBuffer(const BufferType* buffer, size_t length)
@@ -348,12 +363,12 @@ private:
 	/**
 	 * @fn	template<> inline float UartModbus::GetNumFromBuffer(const uint16_t* buffer, size_t length)
 	 *
-	 * @brief	´Ó»º³åÇøÖĞ¶ÁÈ¡Êı¾İ£¨Ğ¡¶Ë£©£¨¸¡µãÌØ»¯£©
+	 * @brief	ä»ç¼“å†²åŒºä¸­è¯»å–æ•°æ®ï¼ˆå°ç«¯ï¼‰ï¼ˆæµ®ç‚¹ç‰¹åŒ–ï¼‰
 	 *
-	 * @param	buffer	»º³åÇø.
-	 * @param	length	»º³åÇø´óĞ¡.
+	 * @param	buffer	ç¼“å†²åŒº.
+	 * @param	length	ç¼“å†²åŒºå¤§å°.
 	 *
-	 * @returns	´Ó»º³åÇøÖĞ¶ÁÈ¡µÄÖµ.
+	 * @returns	ä»ç¼“å†²åŒºä¸­è¯»å–çš„å€¼.
 	 */
 	template<>
 	inline float GetNumFromBuffer(const uint16_t* buffer, size_t length)
@@ -364,14 +379,14 @@ private:
 	/**
 	 * @fn	template<typename ValueType, typename BufferType> inline void UartModbus::SetNumToBuffer(BufferType* buffer, size_t length, const ValueType value)
 	 *
-	 * @brief	½«Êı¾İ´æÈë»º³åÇø£¨Ğ¡¶Ë£© 
-	 * 			ÀıÈçuint32_tÊı¾İ0x04030201´æ´¢µ½uint8_t»º³åÇøÓ¦Îª{0x01,0x02,0x03,0x04}
+	 * @brief	å°†æ•°æ®å­˜å…¥ç¼“å†²åŒºï¼ˆå°ç«¯ï¼‰ 
+	 * 			ä¾‹å¦‚uint32_tæ•°æ®0x04030201å­˜å‚¨åˆ°uint8_tç¼“å†²åŒºåº”ä¸º{0x01,0x02,0x03,0x04}
 	 *
-	 * @tparam	ValueType 	Êı¾İÀàĞÍ.
-	 * @tparam	BufferType	»º³åÇøÀàĞÍ.
-	 * @param [out]	buffer	»º³åÇø.
-	 * @param 	   	length	»º³åÇø³¤¶È.
-	 * @param 	   	value 	Òª´æ´¢µ½»º³åÇøµÄÊıÖµ.
+	 * @tparam	ValueType 	æ•°æ®ç±»å‹.
+	 * @tparam	BufferType	ç¼“å†²åŒºç±»å‹.
+	 * @param [out]	buffer	ç¼“å†²åŒº.
+	 * @param 	   	length	ç¼“å†²åŒºé•¿åº¦.
+	 * @param 	   	value 	è¦å­˜å‚¨åˆ°ç¼“å†²åŒºçš„æ•°å€¼.
 	 */
 	template<typename ValueType, typename BufferType>
 	inline void SetNumToBuffer(BufferType* buffer, size_t length, const ValueType value)
@@ -385,11 +400,11 @@ private:
 	/**
 	 * @fn	template<> inline void UartModbus::SetNumToBuffer(uint16_t* buffer, size_t length, float value)
 	 *
-	 * @brief	½«Êı¾İ´æÈë»º³åÇø£¨Ğ¡¶Ë£©£¨¸¡µãÌØ»¯£©
+	 * @brief	å°†æ•°æ®å­˜å…¥ç¼“å†²åŒºï¼ˆå°ç«¯ï¼‰ï¼ˆæµ®ç‚¹ç‰¹åŒ–ï¼‰
 	 *
-	 * @param [out]	buffer	»º³åÇø.
-	 * @param 	   	length	»º³åÇø³¤¶È.
-	 * @param 	   	value 	Òª´æ´¢µ½»º³åÇøµÄÊıÖµ.
+	 * @param [out]	buffer	ç¼“å†²åŒº.
+	 * @param 	   	length	ç¼“å†²åŒºé•¿åº¦.
+	 * @param 	   	value 	è¦å­˜å‚¨åˆ°ç¼“å†²åŒºçš„æ•°å€¼.
 	 */
 	template<>
 	inline void SetNumToBuffer(uint16_t* buffer, size_t length, float value)
