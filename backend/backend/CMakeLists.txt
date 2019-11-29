@@ -7,9 +7,9 @@ find_package(cpprestsdk CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(libmodbus CONFIG REQUIRED)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 aux_source_directory(
-    ./ DIR_SRC
+    ./src DIR_SRC
 )
 # 将源代码添加到此项目的可执行文件。
 add_executable (backend ${DIR_SRC})
@@ -17,6 +17,7 @@ add_executable (backend ${DIR_SRC})
 # TODO: 如有需要，请添加测试并安装目标。
 target_compile_features(backend PUBLIC cxx_std_17)
 target_link_libraries(backend PRIVATE
+	bcrypt
 	modbus
 	fmt::fmt
 	cpprestsdk::cpprest

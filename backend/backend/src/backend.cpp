@@ -1,4 +1,4 @@
-﻿// backend.cpp: 定义应用程序的入口点。
+// backend.cpp: 定义应用程序的入口点。
 //
 
 #include "backend.h"
@@ -18,15 +18,15 @@ std::unique_ptr<SerialController> serialController{};
 
 int main()
 {
-	utility::string_t port = L"8080";
-	utility::string_t addr = L"http://*:";
-	utility::string_t path = L"/api";
+	utility::string_t port = L"34500";
+	utility::string_t addr = L"http://localhost:";
+	utility::string_t path = L"/api/interface";
 	addr.append(port).append(path);
 	serialController = std::make_unique<SerialController>(addr);
 	serialController->open().wait();
 
 	ucout << utility::string_t(L"Listening for requests at: ") << addr << std::endl;
-
+	
 	std::string line;
 	std::getline(std::cin, line);
 

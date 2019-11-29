@@ -280,7 +280,8 @@ public:
 	{
 		if (!m_IsValid || !m_Connection)
 			return 0;
-		constexpr size_t bufLength = sizeof(T) / sizeof(uint16_t);
+		constexpr size_t bufLength = sizeof(T) / sizeof(uint16_t) < 1 ?
+			1 : sizeof(T) / sizeof(uint16_t);
 		uint16_t buf[bufLength]{};
 		if (-1 == modbus_read_registers(m_Connection, registerAddress, bufLength, buf))
 		{
@@ -290,7 +291,7 @@ public:
 	}
 
 	/**
-	 * @fn	template<typename T> void UartModbus::WriteRegisters(unsigned int registerAddress, const T value)
+	 * @fn	template<typename T> void UartModbus::WriteRegisters(unsigned int registerAddress, T value)
 	 *
 	 * @brief	写多个16位寄存器（取决于写入类型）
 	 *
@@ -301,11 +302,12 @@ public:
 	 * @param	value		   	将写入的值.
 	 */
 	template<typename T>
-	void WriteRegisters(unsigned int registerAddress, const T value)
+	void WriteRegisters(unsigned int registerAddress, T value)
 	{
 		if (!m_IsValid || !m_Connection)
-			return 0;
-		constexpr size_t bufLength = sizeof(T) / sizeof(uint16_t);
+			return;
+		constexpr size_t bufLength = sizeof(T) / sizeof(uint16_t) < 1 ?
+			1 : sizeof(T) / sizeof(uint16_t);
 		uint16_t buf[bufLength]{};
 		if (-1 == modbus_write_registers(m_Connection, registerAddress, bufLength, buf))
 		{
