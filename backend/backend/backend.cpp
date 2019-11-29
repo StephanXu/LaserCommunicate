@@ -18,14 +18,14 @@ std::unique_ptr<SerialController> serialController{};
 
 int main()
 {
-	utility::string_t port = U("8080");
-	utility::string_t addr = U("http://*:");
-	utility::string_t path = U("/api");
+	utility::string_t port = L"8080";
+	utility::string_t addr = L"http://*:";
+	utility::string_t path = L"/api";
 	addr.append(port).append(path);
 	serialController = std::make_unique<SerialController>(addr);
 	serialController->open().wait();
 
-	ucout << utility::string_t(U("Listening for requests at: ")) << addr << std::endl;
+	ucout << utility::string_t(L"Listening for requests at: ") << addr << std::endl;
 
 	std::string line;
 	std::getline(std::cin, line);

@@ -15,7 +15,7 @@ aux_source_directory(
 add_executable (backend ${DIR_SRC})
 
 # TODO: 如有需要，请添加测试并安装目标。
-target_compile_features(backend PUBLIC cxx_std_11)
+target_compile_features(backend PUBLIC cxx_std_17)
 target_link_libraries(backend PRIVATE
 	modbus
 	fmt::fmt
