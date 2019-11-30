@@ -37,6 +37,8 @@ private:
 
 	void Get(http_request message);
 
+	void Patch(http_request message);
+
 	void LoadConfiguration();
 
 	std::unordered_map<std::string, std::unique_ptr<InterfaceWrapper>> m_Interfaces;

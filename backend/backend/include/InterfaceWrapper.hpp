@@ -36,7 +36,7 @@ public:
 			throw std::runtime_error("Empty IOPort");
 		return m_IOPort->Read();
 	}
-	std::string Write(const std::string& value)
+	void Write(const std::string& value)
 	{
 		if (!m_IOPort)
 			throw std::runtime_error("Empty IOPort");
@@ -115,7 +115,7 @@ private:
 		{
 			if (m_Writable)
 			{
-				//m_WriteValueFunc(StringConverter<T>::StringToNum(value);
+				m_WriteValueFunc(StringConverter<T>::StringToNum(value));
 			}
 		}
 

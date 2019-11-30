@@ -119,7 +119,8 @@ public:
 	 * @author	Xu Zihan
 	 * @date	2019/11/29
 	 *
-	 * @param	device		  	portname(串口名): 在Windows下是"COM1""COM2"等，在Linux下是"/dev/ttyS1"等.
+	 * @param	device		  	portname(串口名): 在Windows下是"\\.\COM1"、"\\.\COM2"（此处无转义）等
+	 * 							在Linux下是"/dev/ttyS1"等.
 	 * @param	baudrate	  	baudrate(波特率): 9600、19200、38400、43000、56000、57600、115200.
 	 * @param	parity		  	parity(校验位): 0为无校验，1为奇校验，2为偶校验，3为标记校验(仅适用于windows)
 	 * @param	dataBit		  	databit(数据位): 4-8(windows),5-8(linux)，通常为8位.
@@ -186,7 +187,8 @@ public:
 	 * @exception	ModbusConnectError	Raised when the Modbus Connect error condition occurs.
 	 * @exception	std::runtime_error	Raised when a runtime error condition occurs.
 	 *
-	 * @param	device  	portname(串口名): 在Windows下是"COM1""COM2"等，在Linux下是"/dev/ttyS1"等.
+	 * @param	device  	portname(串口名): 在Windows下是"\\.\COM1"、"\\.\COM2"（此处无转义）等
+	 * 						在Linux下是"/dev/ttyS1"等.
 	 * @param	baudrate	baudrate(波特率): 9600、19200、38400、43000、56000、57600、115200.
 	 * @param	parity  	parity(校验位): 0为无校验，1为奇校验，2为偶校验，3为标记校验(仅适用于windows)
 	 * @param	dataBit 	databit(数据位): 4-8(windows),5-8(linux)，通常为8位.
@@ -221,6 +223,7 @@ public:
 			throw ConnectError("Establish connection", errno);
 		}
 		m_IsValid = true;
+		return m_IsValid;
 	}
 
 	/**
@@ -324,6 +327,7 @@ public:
 		constexpr size_t bufLength = sizeof(T) / sizeof(uint16_t) < 1 ?
 			1 : sizeof(T) / sizeof(uint16_t);
 		uint16_t buf[bufLength]{};
+		SetNumToBuffer<T>(buf, bufLength, value);
 		if (-1 == modbus_write_registers(m_Connection, registerAddress, bufLength, buf))
 		{
 			throw IOError(IOError::IODirection::Out, registerAddress, errno);

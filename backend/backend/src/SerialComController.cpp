@@ -6,13 +6,14 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include <boost/exception/all.hpp>
 
 SerialComController::SerialComController(utility::string_t url, UartModbus* uartModbus)
 	:m_Listener(url)
 	, m_Modbus(uartModbus)
 {
 	m_Listener.support(methods::GET, std::bind(&SerialComController::Get, this, std::placeholders::_1));
-	m_Listener.support(methods::PATCH, std::bind(&SerialComController::Get, this, std::placeholders::_1));
+	m_Listener.support(methods::PATCH, std::bind(&SerialComController::Patch, this, std::placeholders::_1));
 }
 
 SerialComController::~SerialComController()
@@ -35,7 +36,7 @@ void SerialComController::Patch(http_request message)
 				std::istringstream ss(utility::conversions::to_utf8string(t.get()));
 				boost::property_tree::read_json(ss, root);
 				std::string action = root.get<std::string>("action");
-				if (action.compare("activate"))
+				if (!action.compare("activate"))
 				{
 					m_Modbus->Open(
 						root.get<std::string>("deviceName"),
@@ -44,11 +45,13 @@ void SerialComController::Patch(http_request message)
 						strtol(root.get<std::string>("dataBit").c_str(), NULL, 10),
 						static_cast<UartModbus::StopBit>(strtol(root.get<std::string>("stopBit").c_str(), NULL, 10)),
 						strtol(root.get<std::string>("slaveId").c_str(), NULL, 10));
+					m_Modbus->SetFloatByteOrder(UartModbus::FloatByteOrder::BADC);
 				}
-				else if (action.compare("deactivate"))
+				else if (!action.compare("deactivate"))
 				{
 					m_Modbus->Close();
 				}
+				ReplySingleValue(message, status_codes::OK, "ret", "ok");
 			}
 			catch (UartModbus::ConnectError & e)
 			{
@@ -56,7 +59,7 @@ void SerialComController::Patch(http_request message)
 			}
 			catch (...)
 			{
-				ReplyError(message, status_codes::InternalError, "Undefined error");
+				ReplyError(message, status_codes::InternalError, boost::current_exception_diagnostic_information());
 			}
 		}
 	);

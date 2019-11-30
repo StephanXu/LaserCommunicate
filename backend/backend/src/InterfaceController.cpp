@@ -10,6 +10,7 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
+#include <boost/exception/all.hpp>
 
 #include <fstream>
 #include <sstream>
@@ -21,6 +22,7 @@ InterfaceController::InterfaceController(utility::string_t url, UartModbus* uart
 {
 	LoadConfiguration();
 	m_Listener.support(methods::GET, std::bind(&InterfaceController::Get, this, std::placeholders::_1));
+	m_Listener.support(methods::PATCH, std::bind(&InterfaceController::Patch, this, std::placeholders::_1));
 }
 
 InterfaceController::~InterfaceController()
@@ -30,7 +32,14 @@ InterfaceController::~InterfaceController()
 void InterfaceController::Get(http_request message)
 {
 	try
-	{
+	{	
+		std::map<string_t, string_t> queryParams = uri::split_query(message.relative_uri().query());
+		unsigned int modeFilter = 0;
+		auto modeFilterQueryIter = queryParams.find(L"mode");
+		if (queryParams.end() != modeFilterQueryIter)
+		{
+			modeFilter = strtol(conversions::to_utf8string(modeFilterQueryIter->second).c_str(), NULL, 10);
+		}
 		std::vector<string_t> paths = uri::split_path(message.relative_uri().path());
 		if (paths.size() < 1)
 		{
@@ -39,6 +48,12 @@ void InterfaceController::Get(http_request message)
 			boost::property_tree::ptree actions;
 			for (auto&& item : m_Interfaces)
 			{
+				if ((0 != item.second->AvailableInMode()) &&
+					(modeFilter != item.second->AvailableInMode()) &&
+					(0 != modeFilter))
+				{
+					continue;
+				}
 				boost::property_tree::ptree action;
 				action.put("id", item.first);
 				action.put("symbol", item.second->Symbol());
@@ -70,6 +85,50 @@ void InterfaceController::Get(http_request message)
 	{
 		ReplyError(message, status_codes::InternalError, "Undefined error");
 	}
+}
+
+void InterfaceController::Patch(http_request message)
+{
+	std::vector<string_t> paths = uri::split_path(message.relative_uri().path());
+	if (paths.size() < 1)
+	{
+		// request all list
+		ReplyError(message, status_codes::BadRequest, "Can't modify interface root");
+		return;
+	}
+	std::string interfaceToModify = conversions::to_utf8string(paths[0]);
+	message.extract_utf8string().then(
+		[=](pplx::task<std::string> t) {
+			try
+			{
+				boost::property_tree::ptree root;
+				std::istringstream ss(t.get());
+				boost::property_tree::read_json(ss, root);
+				std::string valueToModify = root.get<std::string>("value");
+				auto interfaceIter = m_Interfaces.find(interfaceToModify);
+				if (m_Interfaces.end() == interfaceIter)
+				{
+					ReplyError(message, status_codes::NotFound, "Interface not found");
+					return;
+				}
+				if (!interfaceIter->second->Writable())
+				{
+					ReplyError(message, status_codes::BadRequest, "Interface is not writable");
+					return;
+				}
+				interfaceIter->second->Write(valueToModify);
+				ReplySingleValue(message, status_codes::OK, "ret", "ok");
+			}
+			catch (boost::property_tree::ptree_bad_path & e)
+			{
+				ReplyError(message, status_codes::BadRequest, "Invalid argument");
+			}
+			catch (...)
+			{
+				ReplyError(message, status_codes::InternalError, boost::current_exception_diagnostic_information());
+			}
+		}
+	);
 }
 
 void InterfaceController::LoadConfiguration()
