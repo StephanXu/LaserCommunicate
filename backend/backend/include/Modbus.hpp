@@ -8,6 +8,7 @@
 #include <string>
 #include <functional>
 #include <memory>
+#include <mutex>
 /**
  * @class	UartModbus
  *
@@ -204,6 +205,8 @@ public:
 			  StopBit stopBit,
 			  int slaveId)
 	{
+		Close(); ///< close first (avoid deadlock)
+		std::lock_guard<std::mutex> lockGuard(m_Mutex);
 		m_Connection = modbus_new_rtu(device.c_str(), baudrate, parity, dataBit, stopBit);
 		if (!m_Connection)
 		{
@@ -236,6 +239,7 @@ public:
 	 */
 	void Close()
 	{
+		std::lock_guard<std::mutex> lockGuard(m_Mutex);
 		if (m_IsValid)
 		{
 			modbus_close(m_Connection);
@@ -260,6 +264,7 @@ public:
 	 */
 	void SetFloatByteOrder(FloatByteOrder floatByteOrder) noexcept
 	{
+		std::lock_guard<std::mutex> lockGuard(m_Mutex);
 		switch (floatByteOrder)
 		{
 		case FloatByteOrder::DCBA:
@@ -296,6 +301,7 @@ public:
 	template<typename T>
 	T ReadRegisters(const unsigned int registerAddress)
 	{
+		std::lock_guard<std::mutex> lockGuard(m_Mutex);
 		if (!m_IsValid || !m_Connection)
 			return 0;
 		constexpr size_t bufLength = sizeof(T) / sizeof(uint16_t) < 1 ?
@@ -322,6 +328,7 @@ public:
 	template<typename T>
 	void WriteRegisters(unsigned int registerAddress, T value)
 	{
+		std::lock_guard<std::mutex> lockGuard(m_Mutex);
 		if (!m_IsValid || !m_Connection)
 			return;
 		constexpr size_t bufLength = sizeof(T) / sizeof(uint16_t) < 1 ?
@@ -339,6 +346,8 @@ private:
 	modbus_t* m_Connection = nullptr;
 	std::function<float(const uint16_t*)> m_GetFloatFunc;
 	std::function<void(float, uint16_t*)> m_SetFloatFunc;
+
+	std::mutex m_Mutex;
 
 	/**
 	 * @fn	template<typename RetT, typename BufferType> inline RetT UartModbus::GetNumFromBuffer(const BufferType* buffer, size_t length)
