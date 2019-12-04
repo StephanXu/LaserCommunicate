@@ -58,12 +58,39 @@ void InterfaceController::Get(http_request message)
 				action.put("id", item.first);
 				action.put("symbol", item.second->Symbol());
 				action.put("desc", item.second->Describe());
+				action.put("writable", item.second->Writable());
 				actions.push_back(std::make_pair("", action));
 			}
 			root.add_child("action", actions);
 			std::ostringstream ss;
 			boost::property_tree::write_json(ss, root, false);
-			message.reply(status_codes::OK, ss.str(), "application/json; charset=utf-8");
+			message.reply(MakeResponseWithCORSHeader(status_codes::OK, ss.str()));
+			return;
+		}
+		if (!paths[0].compare(L"all"))
+		{
+			boost::property_tree::ptree root;
+			boost::property_tree::ptree content;
+			for (auto&& item : m_Interfaces)
+			{
+				if ((0 != item.second->AvailableInMode()) &&
+					(modeFilter != item.second->AvailableInMode()) &&
+					(0 != modeFilter))
+				{
+					continue;
+				}
+				boost::property_tree::ptree value;
+				value.put("id", item.first);
+				value.put("symbol", item.second->Symbol());
+				value.put("desc", item.second->Describe());
+				value.put("writable", item.second->Writable());
+				value.put("data", item.second->Read());
+				content.push_back(std::make_pair("", value));
+			}
+			root.add_child("content", content);
+			std::ostringstream ss;
+			boost::property_tree::write_json(ss, root, false);
+			message.reply(MakeResponseWithCORSHeader(status_codes::OK, ss.str()));
 			return;
 		}
 		std::string interfaceId = utility::conversions::to_utf8string(paths[0]);
@@ -71,19 +98,19 @@ void InterfaceController::Get(http_request message)
 		if (m_Interfaces.end() == interfaceIter)
 		{
 			// interface do not exist
-			ReplyError(message, status_codes::NotFound, "Interface not found");
+			message.reply(MakeErrorResponse(status_codes::NotFound, "Interface not found"));
 			return;
 		}
 		std::string result = interfaceIter->second->Read();
-		ReplySingleValue(message, status_codes::OK, "content", result);
+		message.reply(MakeSingleValueResponse(status_codes::OK, "content", result));
 	}
 	catch (std::runtime_error & e)
 	{
-		ReplyError(message, status_codes::InternalError, e.what());
+		message.reply(MakeErrorResponse(status_codes::InternalError, e.what()));
 	}
 	catch (...)
 	{
-		ReplyError(message, status_codes::InternalError, "Undefined error");
+		message.reply(MakeErrorResponse(status_codes::InternalError, "Undefined error"));
 	}
 }
 
@@ -93,7 +120,7 @@ void InterfaceController::Patch(http_request message)
 	if (paths.size() < 1)
 	{
 		// request all list
-		ReplyError(message, status_codes::BadRequest, "Can't modify interface root");
+		message.reply(MakeErrorResponse(status_codes::BadRequest, "Can't modify interface root"));
 		return;
 	}
 	std::string interfaceToModify = conversions::to_utf8string(paths[0]);
@@ -108,24 +135,25 @@ void InterfaceController::Patch(http_request message)
 				auto interfaceIter = m_Interfaces.find(interfaceToModify);
 				if (m_Interfaces.end() == interfaceIter)
 				{
-					ReplyError(message, status_codes::NotFound, "Interface not found");
+					message.reply(MakeErrorResponse(status_codes::NotFound, "Interface not found"));
 					return;
 				}
 				if (!interfaceIter->second->Writable())
 				{
-					ReplyError(message, status_codes::BadRequest, "Interface is not writable");
+					message.reply(MakeErrorResponse(status_codes::BadRequest, "Interface is not writable"));
 					return;
 				}
 				interfaceIter->second->Write(valueToModify);
-				ReplySingleValue(message, status_codes::OK, "ret", "ok");
+				message.reply(MakeSingleValueResponse(status_codes::OK, "ret", "ok"));
 			}
 			catch (boost::property_tree::ptree_bad_path & e)
 			{
-				ReplyError(message, status_codes::BadRequest, "Invalid argument");
+				message.reply(MakeErrorResponse(status_codes::BadRequest, "Invalid argument"));
 			}
 			catch (...)
 			{
-				ReplyError(message, status_codes::InternalError, boost::current_exception_diagnostic_information());
+				message.reply(MakeErrorResponse(status_codes::InternalError, 
+												boost::current_exception_diagnostic_information()));
 			}
 		}
 	);

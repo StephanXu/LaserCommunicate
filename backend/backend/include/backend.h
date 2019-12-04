@@ -13,5 +13,5 @@
 struct StaticConfiguration
 {
 	const utility::string_t addr = L"http://*:";
-	const utility::string_t port = L"34600";
+	const utility::string_t port = L"34500";
 };

@@ -3,13 +3,12 @@
 
 #include <cpprest/http_client.h>
 
-void ReplySingleValue(web::http::http_request request,
-					  web::http::status_code statusCode,
-					  const std::string& name,
-					  const std::string& content);
+web::http::http_response MakeResponseWithCORSHeader(web::http::status_code statusCode, const std::string& what);
+web::http::http_response MakeSingleValueResponse(web::http::status_code statusCode,
+												 const std::string& name,
+												 const std::string& content);
 
-void ReplyError(web::http::http_request request, web::http::status_code statusCode, const std::string& what);
-void ReplyError(web::http::http_request request, web::http::status_code statusCode, const utility::string_t& what);
-
+web::http::http_response MakeErrorResponse(web::http::status_code statusCode, const std::string& what);
+web::http::http_response MakeErrorResponse(web::http::status_code statusCode, const utility::string_t& what);
 
 #endif
