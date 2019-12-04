@@ -1,19 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {Message} from 'element-ui'
 import {
     settingsStore
 } from '../rpc'
+import { get, post } from "../http/http"
 
 Vue.use(Vuex)
 let store = new Vuex.Store({
     state: {
+        connectStatus: false,
+        connectPort: '',
         isMaximized: false,
         isFocus: true,
+        tableData: [],
         comRules: [],
         clientWidth: 0,
         clientHeight: 0
     },
     getters: {
+        getTable: (state) => state.tableData,
+        getConnectPort: (state) => state.connectPort,
+        getConnectStatus: (state) => state.connectStatus,
         getRules: (state) => state.comRules,
         getMaximized: (state) => state.isMaximized,
         getClientWidth: (state) => state.clientWidth,
@@ -21,6 +29,15 @@ let store = new Vuex.Store({
         getFocus: (state) => state.isFocus
     },
     mutations: {
+        getTableData(state, rule) {
+            state.tableData = rule
+        },
+        connectPort(state, rule) {
+            state.connectPort = rule
+        },
+        connectStatus(state, rule) {
+            state.connectStatus = rule
+        },
         addNewRule(state, rule) {
             state.comRules.push(rule)
         },
@@ -44,6 +61,70 @@ let store = new Vuex.Store({
         }
     },
     actions: {
+        // 获取功能参数列表表格数据
+        getTableData(context, rule) {
+            get("/api/interface", rule
+                ,{headers: {"Content-Type": "application/json"}}
+            ).then(response => {
+                var res = response.action
+                // get('/api/interface/all').then(response => {
+                //     console.log(response)
+                // })
+                for (let i = 0; i < res.length; i++) {
+                    get('/api/interface/' + res[i].id).then(response => {
+                        Vue.set(res[i], 'data', response.content)
+                        Vue.set(res[i], 'index', i+1)
+                    })
+                }
+                context.commit('getTableData', res)
+            }).catch(() => {
+                Message.warning("获取数据失败！");
+            })
+            settingsStore.setRules(context.state.tableData)
+        },
+        // 初始化连接
+        initConnect(context,value) {
+            context.commit('connectPort', value)
+            var body = {
+                "action": "activate",
+                "deviceName": value,
+                "baudrate": "115200",
+                "parity": "78",
+                "dataBit": "8",
+                "stopBit": "0",
+                "slaveId": "11"
+            }
+            post("/api/com/", JSON.stringify(body)
+                , { headers: { "Content-Type": "application/json" } }
+            ).then(() => {
+                context.commit('connectStatus', true)
+                Message.success("设备连接成功！")
+            }).catch(() => {
+                Message.warning("连接失败，请选择正确的串口！")
+            })
+        },
+        // 断开连接
+        disConnect(context,value) {
+            var body = {
+                action: "deactivate",
+                deviceName: value,
+                baudrate: "115200",
+                parity: "78",
+                dataBit: "8",
+                stopBit: "0",
+                slaveId: "11"
+            };
+            post("/api/com/", JSON.stringify(body), {
+                headers: { "Content-Type": "application/json" }
+            })
+                .then(() => {
+                    context.commit('connectStatus', false)
+                    Message.success("断开连接成功！");
+                })
+                .catch(() => {
+                    Message.error("断开连接失败！");
+                })
+        },
         addNewRule(context, rule) {
             context.commit('addNewRule', rule)
             settingsStore.setRules(context.state.comRules)
@@ -52,7 +133,7 @@ let store = new Vuex.Store({
             context.commit('setRules', settingsStore.loadRules())
         },
         removeRule(context, rule) {
-            context.commit('removeRule',rule)
+            context.commit('removeRule', rule)
             settingsStore.setRules(context.state.comRules)
         }
     }

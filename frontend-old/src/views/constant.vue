@@ -1,24 +1,20 @@
 <script>
 const sheetField = [
   {
-    propName: "alias",
+    propName: "index",
+    text: "序号"
+  },
+  {
+    propName: "symbol",
     text: "数据名称"
   },
   {
-    propName: "regOffset",
-    text: "寄存器偏移"
-  },
-  {
-    propName: "funcCode",
-    text: "功能码"
-  },
-  {
-    propName: "dataType",
-    text: "数据类型"
-  },
-  {
     propName: "desc",
-    text: "描述"
+    text: "数据描述"
+  },
+  {
+    propName: "data",
+    text: "当前数值"
   }
 ];
 

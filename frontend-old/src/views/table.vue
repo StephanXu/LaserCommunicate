@@ -2,55 +2,82 @@
   <el-container class="table-page">
     <el-header>
       <el-row>
-        <el-col :span="12">
+        <el-col :span="8">
           <h2>功能参数列表</h2>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="16">
           <div class="table-control-button-container">
-            <el-button @click="addRule()" icon="el-icon-plus">添加</el-button>
-            <el-button @click="deleteEvent()" icon="el-icon-delete">删除</el-button>
-            <el-button @click="temperature()" icon="el-icon-data-analysis">温度曲线图</el-button>
+            <!-- <el-button @click="addRule()" icon="el-icon-plus">添加</el-button> -->
+            <el-select style="margin-right:5px" v-model="portValue" placeholder="请先选择串口">
+              <el-option
+                v-for="item in portOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+            <el-select v-model="styleValue" placeholder="请选择模式" @change="chooseStyle(value)">
+              <el-option
+                v-for="item in styleOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+            <el-button
+              class="connectButton"
+              v-if="!getConnectStatus"
+              @click="initConnect()"
+              icon="el-icon-circle-check"
+            >连接</el-button>
+            <el-button
+              class="connectButton"
+              v-else
+              @click="disconnect()"
+              icon="el-icon-circle-close"
+            >断开连接</el-button>
+            <!-- <el-button @click="temperature()" icon="el-icon-data-analysis">温度曲线图</el-button> -->
           </div>
         </el-col>
       </el-row>
     </el-header>
     <el-main>
-      <el-table
-        :data="getRules"
-        @current-change="handleCurrentChange"
-        ref="multipleTable"
-        tooltip-effect="dark"
-      >
+      <el-table :data="getTable" ref="multipleTable" tooltip-effect="dark" height="550">
         <el-table-column
           v-for="item in sheetConfig"
           :key="item.propName"
           :prop="item.propName"
           :label="item.text"
         ></el-table-column>
-        <el-table-column label="状态" width="52">
+        <el-table-column align="right">
+          <template slot="header">
+            <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
+          </template>
           <template slot-scope="scope">
             <el-button
-              v-if="scope.row.status"
+              v-if="writable(scope.row)"
               type="success"
-              icon="el-icon-check"
               size="mini"
-              circle
-            ></el-button>
-            <el-button v-else type="danger" icon="el-icon-close" size="mini" circle></el-button>
+              @click="handleCurrentChange(scope.row)"
+            >发送</el-button>
+            <el-button v-else type="danger" size="mini" disabled>只读</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-main>
 
-    <el-drawer
-      title="添加规则"
+    <!-- <el-drawer
+      title="发送设置"
       :show-close="false"
       :visible.sync="isAddRuleVisile"
       direction="rtl"
       size="50%"
     >
-      <add-rule :on-close="handleAddRule"></add-rule>
-    </el-drawer>
+      <add-rule :row="message" :on-close="handleAddRule"></add-rule>
+    </el-drawer>-->
+    <el-dialog title="发送设置" :visible.sync="isAddRuleVisile" width="60%" @close="handleClose">
+      <add-rule ref="addRule" :row="message" :on-close="handleAddRule"></add-rule>
+    </el-dialog>
   </el-container>
 </template>
 
@@ -64,21 +91,69 @@ export default {
     "add-rule": AddRule
   },
   computed: {
-    ...mapGetters(["getRules"])
+    ...mapGetters(["getTable"]),
+    ...mapGetters(["getConnectStatus"])
   },
-
+  mounted() {
+    this.getTableData();
+  },
   methods: {
+    // 获取功能参数列表表格数据
+    getTableData() {
+      var params = {
+        mode: 0
+      };
+      this.$store.dispatch("getTableData", params);
+    },
+    // 断开连接
+    disconnect() {
+      var value = this.portValue;
+      this.$store.dispatch("disConnect", value);
+    },
+    // 先选择串口，然后连接
+    initConnect() {
+      var value = this.portValue;
+      if (value == "") {
+        this.$message.warning("请先选择串口！");
+      } else {
+        this.$store.dispatch("initConnect", value);
+      }
+    },
+    // 选择模式
+    chooseStyle(value) {
+      var params = {
+        mode: value
+      };
+      this.$store.dispatch("getTableData", params);
+    },
+    // 判断是否可写
+    writable(row) {
+      if (row.writable === "true") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    // 发送参数
+    handleCurrentChange(currentRow) {
+      if (currentRow.writable === "true") {
+        this.message = currentRow;
+        this.isAddRuleVisile = true;
+      }
+    },
+    // 关闭弹窗的回调
+    handleClose(){
+      this.$refs.addRule.resetForm('formData')
+    },
     addRule() {
       this.isAddRuleVisile = true;
     },
     deleteEvent() {
+      this.disconnect();
       this.$store.dispatch("removeRule", this.selected);
     },
     temperature() {
       this.$router.push({ path: "/temperature" });
-    },
-    handleCurrentChange(currentRow) {
-      this.selected = currentRow;
     },
     handleAddRule() {
       this.isAddRuleVisile = false;
@@ -89,7 +164,71 @@ export default {
     return {
       sheetConfig: global.sheetField,
       selected: {},
-      isAddRuleVisile: false
+      isAddRuleVisile: false,
+      search: "",
+      message: {},
+      styleOptions: [
+        {
+          value: "0",
+          label: "通用模式"
+        },
+        {
+          value: "1",
+          label: "温度反馈模式"
+        },
+        {
+          value: "2",
+          label: "光功率反馈模式"
+        },
+        {
+          value: "3",
+          label: "电功率反馈模式"
+        }
+      ],
+      styleValue: "0",
+      portOptions: [
+        {
+          value: "\\\\.\\COM1",
+          label: "COM1"
+        },
+        {
+          value: "\\\\.\\COM2",
+          label: "COM2"
+        },
+        {
+          value: "\\\\.\\COM3",
+          label: "COM3"
+        },
+        {
+          value: "\\\\.\\COM4",
+          label: "COM4"
+        },
+        {
+          value: "\\\\.\\COM5",
+          label: "COM5"
+        },
+        {
+          value: "\\\\.\\COM6",
+          label: "COM6"
+        },
+        {
+          value: "\\\\.\\COM7",
+          label: "COM7"
+        },
+        {
+          value: "\\\\.\\COM8",
+          label: "COM8"
+        },
+        {
+          value: "\\\\.\\COM9",
+          label: "COM9"
+        },
+        {
+          value: "\\\\.\\COM10",
+          label: "COM10"
+        }
+      ],
+      portValue: ""
     };
   }
 };
@@ -106,5 +245,4 @@ export default {
   align-items: center;
   height: 75px;
 }
-
 </style>

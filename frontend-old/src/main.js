@@ -4,20 +4,27 @@ import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
 import echarts from 'echarts'
-import http from './http'
 import 'element-ui/lib/theme-chalk/index.css'
 import './icon/codicon.css'
+import { mapGetters } from "vuex";
+
 
 Vue.prototype.$echarts = echarts
 Vue.use(ElementUI)
 Vue.config.productionTip = false
-console.log(http)
 new Vue({
   el: '#app',
   router,
   store,
   render: h => h(App),
+  computed: {
+    ...mapGetters(["getConnectPort"])
+  },
   created() {
     this.$store.dispatch('loadRules')
-  }
+  },
+  destroyed(){
+    this.$store.dispatch('disConnect',this.getConnectPort)
+  },
 })
+
