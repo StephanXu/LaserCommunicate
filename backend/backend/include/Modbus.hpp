@@ -285,21 +285,20 @@ public:
 			break;
 		}
 	}
-
 	/**
-	 * @fn	template<typename T> T UartModbus::ReadRegisters(const unsigned int registerAddress)
+	 * @fn	template<typename T> T UartModbus::ReadRegisters(const unsigned int registerAddress) const
 	 *
 	 * @brief	读多个16位寄存器（取决于返回类型）
 	 *
 	 * @exception	IOError	Raised when an I/O error condition occurs.
 	 *
 	 * @tparam	T	返回类型（借此推导读寄存器的数量）.
-	 * @param	registerAddress	寄存器地址.
+	 * @param 	registerAddress	寄存器地址.
 	 *
 	 * @returns	寄存器值.
 	 */
 	template<typename T>
-	T ReadRegisters(const unsigned int registerAddress)
+	T ReadRegisters(const unsigned int registerAddress) const
 	{
 		std::lock_guard<std::mutex> lockGuard{ m_Mutex };
 		if (!m_IsValid || !m_Connection)
@@ -341,6 +340,25 @@ public:
 		}
 	}
 
+
+	int GetDataCache(std::shared_ptr<uint16_t[]> buffer,
+						  const size_t bufferSize,
+						  const unsigned int beginRegisterAddress,
+						  const size_t readNum) const
+	{
+		std::lock_guard<std::mutex> lockGuard{ m_Mutex };
+		if (!m_IsValid || !m_Connection || !buffer)
+			return 0;
+		int readCount = modbus_read_registers(m_Connection,
+											  beginRegisterAddress,
+											  std::min(bufferSize / sizeof(uint16_t), readNum),
+											  buffer.get());
+		if (-1 == readCount)
+		{
+			throw IOError(IOError::IODirection::Out, beginRegisterAddress, errno);
+		}
+		return readCount;
+	}
 private:
 	bool m_IsValid = false;
 	modbus_t* m_Connection = nullptr;
@@ -348,22 +366,20 @@ private:
 	std::function<void(float, uint16_t*)> m_SetFloatFunc;
 
 	mutable std::mutex m_Mutex;
-
 	/**
-	 * @fn	template<typename RetT, typename BufferType> inline RetT UartModbus::GetNumFromBuffer(const BufferType* buffer, size_t length)
+	 * @fn	template<typename RetT, typename BufferType> inline RetT UartModbus::GetNumFromBuffer(const BufferType* buffer, size_t length) const
 	 *
-	 * @brief	从缓冲区中读取数据（小端） 
-	 * 			例如uint8_t的缓冲区{0x01,0x02,0x03,0x04}读取到uint32_t数据中应为0x04030201
+	 * @brief	从缓冲区中读取数据（小端） 例如uint8_t的缓冲区{0x01,0x02,0x03,0x04}读取到uint32_t数据中应为0x04030201
 	 *
 	 * @tparam	RetT	  	返回类型.
 	 * @tparam	BufferType	缓冲区类型.
-	 * @param	buffer	The 缓冲区.
-	 * @param	length	The 缓冲区长度.
+	 * @param 	buffer	The 缓冲区.
+	 * @param 	length	The 缓冲区长度.
 	 *
 	 * @returns	从缓冲区中读取的值.
 	 */
 	template<typename RetT, typename BufferType>
-	inline RetT GetNumFromBuffer(const BufferType* buffer, size_t length)
+	inline RetT GetNumFromBuffer(const BufferType* buffer, size_t length) const
 	{
 		RetT result = 0;
 		for (int i{}; i < sizeof(RetT) && i < length; ++i)
@@ -372,28 +388,25 @@ private:
 		}
 		return result;
 	}
-
 	/**
-	 * @fn	template<> inline float UartModbus::GetNumFromBuffer(const uint16_t* buffer, size_t length)
+	 * @fn	template<> inline float UartModbus::GetNumFromBuffer(const uint16_t* buffer, size_t length) const
 	 *
 	 * @brief	从缓冲区中读取数据（小端）（浮点特化）
 	 *
-	 * @param	buffer	缓冲区.
-	 * @param	length	缓冲区大小.
+	 * @param 	buffer	缓冲区.
+	 * @param 	length	缓冲区大小.
 	 *
 	 * @returns	从缓冲区中读取的值.
 	 */
 	template<>
-	inline float GetNumFromBuffer(const uint16_t* buffer, size_t length)
+	inline float GetNumFromBuffer(const uint16_t* buffer, size_t length) const
 	{
 		return m_GetFloatFunc(buffer);
 	}
-
 	/**
-	 * @fn	template<typename ValueType, typename BufferType> inline void UartModbus::SetNumToBuffer(BufferType* buffer, size_t length, const ValueType value)
+	 * @fn	template<typename ValueType, typename BufferType> inline void UartModbus::SetNumToBuffer(BufferType* buffer, size_t length, const ValueType value) const
 	 *
-	 * @brief	将数据存入缓冲区（小端） 
-	 * 			例如uint32_t数据0x04030201存储到uint8_t缓冲区应为{0x01,0x02,0x03,0x04}
+	 * @brief	将数据存入缓冲区（小端） 例如uint32_t数据0x04030201存储到uint8_t缓冲区应为{0x01,0x02,0x03,0x04}
 	 *
 	 * @tparam	ValueType 	数据类型.
 	 * @tparam	BufferType	缓冲区类型.
@@ -402,7 +415,7 @@ private:
 	 * @param 	   	value 	要存储到缓冲区的数值.
 	 */
 	template<typename ValueType, typename BufferType>
-	inline void SetNumToBuffer(BufferType* buffer, size_t length, const ValueType value)
+	inline void SetNumToBuffer(BufferType* buffer, size_t length, const ValueType value) const
 	{
 		for (int i{}; i < sizeof(ValueType) && i < length; ++i)
 		{
@@ -411,7 +424,7 @@ private:
 	}
 
 	/**
-	 * @fn	template<> inline void UartModbus::SetNumToBuffer(uint16_t* buffer, size_t length, float value)
+	 * @fn	template<> inline void UartModbus::SetNumToBuffer(uint16_t* buffer, size_t length, float value) const
 	 *
 	 * @brief	将数据存入缓冲区（小端）（浮点特化）
 	 *
@@ -420,7 +433,7 @@ private:
 	 * @param 	   	value 	要存储到缓冲区的数值.
 	 */
 	template<>
-	inline void SetNumToBuffer(uint16_t* buffer, size_t length, float value)
+	inline void SetNumToBuffer(uint16_t* buffer, size_t length, float value) const
 	{
 		m_SetFloatFunc(value, buffer);
 	}

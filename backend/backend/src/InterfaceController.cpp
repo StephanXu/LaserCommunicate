@@ -67,6 +67,18 @@ void InterfaceController::Get(http_request message)
 			message.reply(MakeResponseWithCORSHeader(status_codes::OK, ss.str()));
 			return;
 		}
+		if (!paths[0].compare(L"test"))
+		{
+			std::shared_ptr<uint16_t[]> buf{ new uint16_t[1024] };
+			int res = m_Modbus->GetDataCache(buf, sizeof(uint16_t) * 1024, 0x100, 0x7d);
+			std::ostringstream ss;
+			for (int i{}; i < res; ++i)
+			{
+				ss << std::hex << buf[i] << ",";
+			}
+			message.reply(MakeSingleValueResponse(status_codes::OK, "content", ss.str()));
+			return;
+		}
 		if (!paths[0].compare(L"all"))
 		{
 			boost::property_tree::ptree root;
