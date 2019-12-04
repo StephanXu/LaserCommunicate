@@ -13,7 +13,7 @@ SerialComController::SerialComController(utility::string_t url, UartModbus* uart
 	, m_Modbus(uartModbus)
 {
 	m_Listener.support(methods::GET, std::bind(&SerialComController::Get, this, std::placeholders::_1));
-	m_Listener.support(methods::PATCH, std::bind(&SerialComController::Patch, this, std::placeholders::_1));
+	m_Listener.support(methods::POST, std::bind(&SerialComController::Post, this, std::placeholders::_1));
 }
 
 SerialComController::~SerialComController()
@@ -26,7 +26,7 @@ void SerialComController::Get(http_request message)
 
 }
 
-void SerialComController::Patch(http_request message)
+void SerialComController::Post(http_request message)
 {
 	message.extract_string().then(
 		[=](pplx::task<string_t> t) {
@@ -51,15 +51,16 @@ void SerialComController::Patch(http_request message)
 				{
 					m_Modbus->Close();
 				}
-				ReplySingleValue(message, status_codes::OK, "ret", "ok");
+				message.reply(MakeSingleValueResponse(status_codes::OK, "ret", "ok"));
 			}
 			catch (UartModbus::ConnectError & e)
 			{
-				ReplyError(message, status_codes::InternalError, e.what());
+				message.reply(MakeErrorResponse(status_codes::InternalError, e.what()));
 			}
 			catch (...)
 			{
-				ReplyError(message, status_codes::InternalError, boost::current_exception_diagnostic_information());
+				message.reply(MakeErrorResponse(status_codes::InternalError, 
+												boost::current_exception_diagnostic_information()));
 			}
 		}
 	);

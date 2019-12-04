@@ -5487,6 +5487,222 @@
             "desc": "第16段时间高16bit  （t/65536），范围：[0-65535]",
             "writable": false,
             "availableInMode": "0"
+        },
+        {
+            "register": "0x1000",
+            "symbol": "WrittenToFlashPassword",
+            "dataType": "U16",
+            "desc": "出厂定值区写入Flash的密码,写入0x5A34后将下述参数写入flash，掉电后不丢失，否则上述设置的参数在掉电后会丢失",
+            "writable": true,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1001",
+            "symbol": "ModbusToAscCmdPassword",
+            "dataType": "U16",
+            "desc": "写入0x5A56后 转换协议到字符串，调试和测温使用",
+            "writable": true,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1002",
+            "symbol": "ModBusID",
+            "dataType": "U16",
+            "desc": "ModBus的ID设置：1.只有低8bit有效，范围：[1-254]，不能是0和255；2.使用0xff的ID可以在点对点的时候读写操作；3.更改此设置后在写入Flash重启后生效",
+            "writable": true,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1003",
+            "symbol": "TempFeedbackPidParmP",
+            "dataType": "U16",
+            "desc": "PID温度反馈系数P设置范围：[1-65535],内部转换为 [1-65.535]",
+            "writable": true,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1004",
+            "symbol": "TempFeedbackPidParmI",
+            "dataType": "U16",
+            "desc": "PID温度反馈系数I设置范围：[1-65535]",
+            "writable": true,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1005",
+            "symbol": "TempFeedbackPidParmD",
+            "dataType": "U16",
+            "desc": "PID温度反馈系数D设置范围：[1-65535]",
+            "writable": true,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1006",
+            "symbol": "LaserPowerFeedbackPidParmP",
+            "dataType": "U16",
+            "desc": "PID光功率反馈系数P设置范围： [1-65535]",
+            "writable": true,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1007",
+            "symbol": "LaserPowerFeedbackPidParmI",
+            "dataType": "U16",
+            "desc": "PID光功率反馈系数I设置范围： [1-65535]",
+            "writable": true,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1008",
+            "symbol": "LaserPowerFeedbackPidParmD",
+            "dataType": "U16",
+            "desc": "PID光功率反馈系数D设置范围： [1-65535]",
+            "writable": true,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1009",
+            "symbol": "Temp100_DiffValue",
+            "dataType": "I16",
+            "desc": "100度对应的温度的实际偏差值",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x100c",
+            "symbol": "IO_Polarity",
+            "dataType": "U16",
+            "desc": "与计算机连接的外控 和 与控制板连接的 接口的信号的极性，默认：0x7730",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3000",
+            "symbol": "U32_ForTest",
+            "dataType": "U32",
+            "desc": "U32数据类型测试，上电初始值：0x12345678",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3002",
+            "symbol": "F32_ForTest",
+            "dataType": "F32",
+            "desc": "F32数据类型测试，上电初始值：0.123456",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3004",
+            "symbol": "SystemControlReg1",
+            "dataType": "U16",
+            "desc": "控制字节:Bit0：1，手动开启激光电源开关，0：手动关闭激光电源开关；Bit1： 1，手动开启红光指示，0：手动关闭红光指示；Bit2-15：保留",
+            "writable": true,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3010",
+            "symbol": "Ch1SampleValue",
+            "dataType": "U16",
+            "desc": "通道1原始采样值",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3011",
+            "symbol": "Ch2SampleValue",
+            "dataType": "U16",
+            "desc": "通道2原始采样值",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3012",
+            "symbol": "Ch3SampleValue",
+            "dataType": "U16",
+            "desc": "通道3原始采样值",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3013",
+            "symbol": "Ch4SampleValue",
+            "dataType": "U16",
+            "desc": "通道4原始采样值",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3014",
+            "symbol": "NormalizedSampleValue",
+            "dataType": "U32",
+            "desc": "通道归一化采样值",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3016",
+            "symbol": "ProbeNPT",
+            "dataType": "U16",
+            "desc": "探头温度NPT原始采样值",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3017",
+            "symbol": "LocalNPT",
+            "dataType": "U16",
+            "desc": "采集板温度NPT原始采样值",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3018",
+            "symbol": "TempCompValue",
+            "dataType": "U16",
+            "desc": "温度补偿输出电压码值",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3020",
+            "symbol": "RealTimeTemperature",
+            "dataType": "F32",
+            "desc": "当前测量温度，单位：摄氏度",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3022",
+            "symbol": "SystemStatusReg1",
+            "dataType": "U16",
+            "desc": "状态字节：Bit0： 激光电源状态，1： 开启  0：关闭；Bit1： 红光指示状态，1： 开启  0：关闭；Bit2： 激光器输出指示状态 1： 开启  0：关闭；Bit3-15：保留",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3023",
+            "symbol": "DeviceStatus",
+            "dataType": "U16",
+            "desc": "控制器运行状态：Bit0： 1， 激光器过温；  0：正常",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3024",
+            "symbol": "LaserPowerModule1Status",
+            "dataType": "U16",
+            "desc": "激光器驱动模块1的状态：Bit0： 1，功率管过温；0：正常；Bit1： 1，功率管故障（开路）；  0：正常；Bit2： 1，功率管故障（短路）；  0：正常（判断功率管的驱动电压长时间过压）",
+            "writable": false,
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x3025",
+            "symbol": "LaserPowerModule2Status",
+            "dataType": "U16",
+            "desc": "激光器驱动模块2的状态：定义同【激光器驱动模块1】",
+            "writable": false,
+            "availableInMode": "0"
         }
     ]
 }

@@ -5,24 +5,37 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-void ReplySingleValue(web::http::http_request request,
-					  web::http::status_code statusCode, 
-					  const std::string& name,
-					  const std::string& content)
+web::http::http_response MakeSingleValueResponse(web::http::status_code statusCode,
+												 const std::string& name,
+												 const std::string& content)
 {
 	boost::property_tree::ptree root;
 	root.put(name, content);
 	std::ostringstream ss;
 	boost::property_tree::write_json(ss, root);
-	request.reply(statusCode, ss.str(), "application/json; charset=utf-8");
+	return MakeResponseWithCORSHeader(statusCode, ss.str());
 }
 
-void ReplyError(web::http::http_request request, web::http::status_code statusCode, const std::string& what)
+web::http::http_response MakeErrorResponse(web::http::status_code statusCode, const std::string& what)
 {
 	spdlog::error(what);
-	ReplySingleValue(request, statusCode, "error", what);
+	return MakeSingleValueResponse(statusCode, "error", what);
 }
-void ReplyError(web::http::http_request request, web::http::status_code statusCode, const utility::string_t& what)
+web::http::http_response MakeErrorResponse(web::http::status_code statusCode, const utility::string_t& what)
 {
-	ReplyError(request, statusCode, utility::conversions::to_utf8string(what));
+	return MakeErrorResponse(statusCode, utility::conversions::to_utf8string(what));
+}
+
+web::http::http_response MakeResponseWithCORSHeader(web::http::status_code statusCode, const std::string& what)
+{
+	web::http::http_response rep;
+	rep.headers().add(L"Content-Type", L"application/json; charset=utf-8");
+	rep.headers().add(L"Access-Control-Allow-Origin", L"*");
+	rep.headers().add(L"Access-Control-Request-Method", L"GET,POST,OPTIONS");
+	rep.headers().add(L"Access-Control-Allow-Credentials", L"true");
+	rep.headers().add(L"Access-Control-Allow-Headers", L"Content-Type,Access-Token,x-requested-with,Authorization");
+	rep.set_body(what);
+	rep.set_status_code(statusCode);
+	return rep;
+
 }
