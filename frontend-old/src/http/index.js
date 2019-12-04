@@ -1,6 +1,6 @@
 // import axios from 'axios'
 // axios.defaults.baseURL = 'http://localhost:34500'
-//
+
 
 const LaserQuery = {
     getTemperature() {

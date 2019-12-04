@@ -15,13 +15,10 @@
           <el-input v-model="formData[item.propName]"></el-input>
         </el-form-item>-->
         <el-form-item label="数据名称:">
-          <span>{{formData.symbol}}</span>
+          <span>{{row.symbol}}</span>
         </el-form-item>
         <el-form-item label="数据描述:">
-          <span>{{formData.desc}}</span>
-        </el-form-item>
-        <el-form-item label="当前数值:">
-          <span>{{formData.data}}</span>
+          <span>{{row.desc}}</span>
         </el-form-item>
         <el-form-item label="设置数值" prop="dataValue">
           <el-input v-model="formData.dataValue"></el-input>
@@ -56,13 +53,13 @@ export default {
       formData: {
         symbol: this.row.symbol,
         desc: this.row.desc,
-        data: this.row.data?this.row.data:0,
+        data: this.row.data ? this.row.data : 0,
         dataValue: ""
       },
       sheetField: global.sheetField,
       rules: {
         dataValue: [
-          { required: true, message: "请输入设置值", trigger: "blur" },
+          { required: true, message: "设置值不能为空！", trigger: "blur" },
           { validator: checkNum, trigger: "blur" }
         ]
       }
@@ -70,25 +67,26 @@ export default {
   },
   methods: {
     // 提交表单
-    onSubmit(form) {
-      // this.$store.dispatch("addNewRule", { ...this.formData, status: true });
-      this.$refs[form].validate(valid => {
-        if (valid) {
-          var params = {
-            value: this.formData.dataValue
-          };
-          this.$store.dispatch("getTableData", params);
-          this.closeDialog(form);
-          this.onClose();
-        } else {
-          return false;
-        }
-      });
+    onSubmit(formName) {
+      // var re = /^[0-9]+.?[0-9]*$/;
+      var re = /^[-+]?(([0-9]+)([.]([0-9]+))?|([.]([0-9]+))?)$/;
+      if (this.formData.dataValue == "") {
+        this.$message.warning("设置值不能为空");
+      } else if (!re.test(this.formData.dataValue)) {
+        this.$message.warning("请输入数字！");
+        this.formData.dataValue = ""
+      } else {
+        var params = {
+          value: this.formData.dataValue
+        };
+        this.$store.dispatch("getTableData", params);
+        this.resetForm(formName);
+      }
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields()
-      this.$refs[formName].clearValidate()
-      this.onClose()
+      this.$refs[formName].resetFields();
+      this.$refs[formName].clearValidate();
+      this.onClose();
     }
   }
 };
