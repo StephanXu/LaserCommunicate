@@ -30,11 +30,11 @@ public:
 
 	InterfaceWrapper(const InterfaceWrapper& wrapper) = default;
 
-	std::string Read() const
+	std::string Read(bool loadFromCache = false) const
 	{
 		if (!m_IOPort)
 			throw std::runtime_error("Empty IOPort");
-		return m_IOPort->Read();
+		return m_IOPort->Read(loadFromCache);
 	}
 	void Write(const std::string& value)
 	{
@@ -74,7 +74,7 @@ private:
 	{
 	public:
 		virtual std::type_index DataType() = 0;
-		virtual std::string Read() = 0;
+		virtual std::string Read(bool loadFromCache) = 0;
 		virtual void Write(const std::string& value) = 0;
 	};
 
@@ -87,16 +87,20 @@ private:
 					  bool writable)
 			: m_Writable(writable)
 		{
-			m_ReadValueFunc = [instance, registerAddress]() {
+			m_ReadValueFunc = [instance, registerAddress](bool loadFromCache) {
+				if (loadFromCache)
+				{
+					return instance->ReadFromCache<T>(registerAddress);
+				}
 				return instance->ReadRegisters<T>(registerAddress);
 			};
 			m_WriteValueFunc = [instance, registerAddress, writable](T value) {
 				instance->WriteRegisters<T>(registerAddress, value);
 			};
 		}
-		std::string Read() override
+		std::string Read(bool loadFromCache) override
 		{
-			return fmt::format("{}", m_ReadValueFunc());
+			return fmt::format("{}", m_ReadValueFunc(loadFromCache));
 		}
 
 		template<typename __Ty>
@@ -122,7 +126,7 @@ private:
 		std::type_index DataType() override { return std::type_index(typeid(T)); }
 	private:
 		bool m_Writable;
-		std::function<T()> m_ReadValueFunc;
+		std::function<T(bool)> m_ReadValueFunc;
 		std::function<void(T)> m_WriteValueFunc;
 	};
 

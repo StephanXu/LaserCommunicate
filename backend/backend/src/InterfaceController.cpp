@@ -67,22 +67,11 @@ void InterfaceController::Get(http_request message)
 			message.reply(MakeResponseWithCORSHeader(status_codes::OK, ss.str()));
 			return;
 		}
-		if (!paths[0].compare(L"test"))
-		{
-			std::shared_ptr<uint16_t[]> buf{ new uint16_t[1024] };
-			int res = m_Modbus->GetDataCache(buf, sizeof(uint16_t) * 1024, 0x100, 0x7d);
-			std::ostringstream ss;
-			for (int i{}; i < res; ++i)
-			{
-				ss << std::hex << buf[i] << ",";
-			}
-			message.reply(MakeSingleValueResponse(status_codes::OK, "content", ss.str()));
-			return;
-		}
 		if (!paths[0].compare(L"all"))
 		{
 			boost::property_tree::ptree root;
 			boost::property_tree::ptree content;
+			m_Modbus->RefreshCache();
 			for (auto&& item : m_Interfaces)
 			{
 				if ((0 != item.second->AvailableInMode()) &&
@@ -96,7 +85,7 @@ void InterfaceController::Get(http_request message)
 				value.put("symbol", item.second->Symbol());
 				value.put("desc", item.second->Describe());
 				value.put("writable", item.second->Writable());
-				value.put("data", item.second->Read());
+				value.put("data", item.second->Read(true));
 				content.push_back(std::make_pair("", value));
 			}
 			root.add_child("content", content);
@@ -122,7 +111,8 @@ void InterfaceController::Get(http_request message)
 	}
 	catch (...)
 	{
-		message.reply(MakeErrorResponse(status_codes::InternalError, "Undefined error"));
+		message.reply(MakeErrorResponse(status_codes::InternalError,
+										boost::current_exception_diagnostic_information()));
 	}
 }
 
@@ -173,6 +163,12 @@ void InterfaceController::Patch(http_request message)
 
 void InterfaceController::LoadConfiguration()
 {
+	m_Modbus->CreateCachePage(0x0100, 0x023f); //user config
+	m_Modbus->CreateCachePage(0x1000, 0x008f); //vender config
+	m_Modbus->CreateCachePage(0x3000, 0x0025); //status config
+	m_Modbus->CreateCachePage(0x3200, 0x01ff); //temperature records
+	m_Modbus->CreateCachePage(0x3800, 0x01ff); //voltage records
+
 	boost::property_tree::ptree config;
 	std::ifstream f("Config.json");
 	if (!f.is_open())
