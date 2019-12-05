@@ -2,11 +2,12 @@
   <el-container class="table-page">
     <el-header>
       <el-row>
-        <el-col :span="8">
+        <el-col :span="6">
           <h2>功能参数列表</h2>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="18">
           <div class="table-control-button-container">
+            <el-input v-model="search" style="margin-right:5px; width:250px" placeholder="输入关键字搜索" prefix-icon="el-icon-search"/>
             <el-select style="margin-right:5px" v-model="portValue" placeholder="请选择串口">
               <el-option
                 v-for="item in portOptions"
@@ -49,10 +50,7 @@
           :prop="item.propName"
           :label="item.text"
         ></el-table-column>
-        <el-table-column align="right" width="200">
-          <template slot="header">
-            <el-input v-model="search" size="medium" placeholder="输入关键字搜索"/>
-          </template>
+        <el-table-column  label="设置">
           <template slot-scope="scope">
             <el-button
               v-if="writable(scope.row)"
@@ -137,7 +135,6 @@ export default {
   data() {
     return {
       sheetConfig: global.sheetField,
-      selected: {},
       isAddRuleVisile: false,
       search: '',
       message: {},

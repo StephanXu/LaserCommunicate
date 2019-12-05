@@ -82,7 +82,7 @@ let store = new Vuex.Store({
                 // get('/api/interface/all').then(response => {
                 //     console.log(response)
                 // })
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < res.length; i++) {
                     Vue.set(res[i], 'index', i + 1)
                     get('/api/interface/' + res[i].id).then(response => {
                         Vue.set(res[i], 'data', response.content)
