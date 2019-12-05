@@ -7,8 +7,7 @@
         </el-col>
         <el-col :span="16">
           <div class="table-control-button-container">
-            <!-- <el-button @click="addRule()" icon="el-icon-plus">添加</el-button> -->
-            <el-select style="margin-right:5px" v-model="portValue" placeholder="请先选择串口">
+            <el-select style="margin-right:5px" v-model="portValue" placeholder="请选择串口">
               <el-option
                 v-for="item in portOptions"
                 :key="item.value"
@@ -36,22 +35,23 @@
               @click="disconnect()"
               icon="el-icon-circle-close"
             >断开连接</el-button>
-            <!-- <el-button @click="temperature()" icon="el-icon-data-analysis">温度曲线图</el-button> -->
           </div>
         </el-col>
       </el-row>
     </el-header>
     <el-main>
-      <el-table :data="getTable" ref="multipleTable" tooltip-effect="dark" height="550">
+      <el-table 
+      :data="getTable.filter(data => !search || data.desc.toLowerCase().includes(search.toLowerCase()))"
+       ref="multipleTable" tooltip-effect="dark" height="550">
         <el-table-column
           v-for="item in sheetConfig"
           :key="item.propName"
           :prop="item.propName"
           :label="item.text"
         ></el-table-column>
-        <el-table-column align="right">
+        <el-table-column align="right" width="200">
           <template slot="header">
-            <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
+            <el-input v-model="search" size="medium" placeholder="输入关键字搜索"/>
           </template>
           <template slot-scope="scope">
             <el-button
@@ -66,15 +66,6 @@
       </el-table>
     </el-main>
 
-    <!-- <el-drawer
-      title="发送设置"
-      :show-close="false"
-      :visible.sync="isAddRuleVisile"
-      direction="rtl"
-      size="50%"
-    >
-      <add-rule :row="message" :on-close="handleAddRule"></add-rule>
-    </el-drawer>-->
     <el-dialog title="发送设置" :visible.sync="isAddRuleVisile" width="60%" @close="handleClose">
       <add-rule ref="addRule" :row="message" :on-close="handleAddRule"></add-rule>
     </el-dialog>
@@ -92,23 +83,15 @@ export default {
   },
   computed: {
     ...mapGetters(["getTable"]),
-    ...mapGetters(["getConnectStatus"])
-  },
-  mounted() {
-    this.getTableData();
+    ...mapGetters(["getConnectStatus"]),
   },
   methods: {
-    // 获取功能参数列表表格数据
-    getTableData() {
-      var params = {
-        mode: 0
-      };
-      this.$store.dispatch("getTableData", params);
-    },
     // 断开连接
     disconnect() {
       var value = this.portValue;
       this.$store.dispatch("disConnect", value);
+      this.$store.dispatch("getTableData", { mode: this.styleValue });
+      this.portValue = "";
     },
     // 先选择串口，然后连接
     initConnect() {
@@ -117,6 +100,7 @@ export default {
         this.$message.warning("请先选择串口！");
       } else {
         this.$store.dispatch("initConnect", value);
+        this.$store.dispatch("getTableData", { mode: this.styleValue });
       }
     },
     // 选择模式
@@ -142,18 +126,8 @@ export default {
       }
     },
     // 关闭弹窗的回调
-    handleClose(){
-      this.$refs.addRule.resetForm('formData')
-    },
-    addRule() {
-      this.isAddRuleVisile = true;
-    },
-    deleteEvent() {
-      this.disconnect();
-      this.$store.dispatch("removeRule", this.selected);
-    },
-    temperature() {
-      this.$router.push({ path: "/temperature" });
+    handleClose() {
+      this.$refs.addRule.resetForm("formData");
     },
     handleAddRule() {
       this.isAddRuleVisile = false;
@@ -165,7 +139,7 @@ export default {
       sheetConfig: global.sheetField,
       selected: {},
       isAddRuleVisile: false,
-      search: "",
+      search: '',
       message: {},
       styleOptions: [
         {

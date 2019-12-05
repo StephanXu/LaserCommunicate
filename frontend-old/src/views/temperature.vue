@@ -1,7 +1,10 @@
 <template>
   <el-container>
     <el-header>
-      <el-page-header @back="goBack" content="温度变化曲线" style="margin-top:20px"></el-page-header>
+      <el-breadcrumb style="margin-top:25px" separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item>首页</el-breadcrumb-item>
+        <el-breadcrumb-item>温度变化曲线</el-breadcrumb-item>
+      </el-breadcrumb>
     </el-header>
     <el-container>
       <div style="align:center;">
@@ -13,7 +16,6 @@
 <script>
 import { setInterval } from "timers";
 import { mapGetters } from "vuex";
-import http from "../http";
 
 Date.prototype.Format = function(fmt) {
   //author: meizz
@@ -42,7 +44,7 @@ Date.prototype.Format = function(fmt) {
 
 export default {
   computed: {
-    ...mapGetters(["getClientWidth", "getClientHeight"]),
+    ...mapGetters(["getClientWidth", "getClientHeight", "getSpecifyValue"]),
     graphStyle() {
       return {
         width: `${this.getClientWidth}px`,
@@ -54,6 +56,7 @@ export default {
     return {
       graphData: [],
       graphTime: [],
+      resultTemp: "",
       option: {
         xAxis: {
           type: "category",
@@ -106,7 +109,9 @@ export default {
       myChart.setOption(this.option);
       const _this = this;
       setInterval(() => {
-        _this.graphData.push(http.LaserQuery.getTemperature().result);
+        _this.$store.dispatch("refreshSpecifyData", "RealTimeTemperature");
+        let result =  _this.getSpecifyValue("RealTimeTemperature").data;
+        _this.graphData.push(result);
         _this.graphTime.push(new Date().Format("hh:mm:ss"));
         if (_this.graphData.length > 30) {
           _this.graphData.shift();
@@ -115,15 +120,15 @@ export default {
         _this.option.series[0].data = _this.graphData;
         _this.option.xAxis.data = _this.graphTime;
         myChart.setOption(_this.option);
-        myChart.resize()
+        myChart.resize();
       }, 1000);
     },
-    goBack() {
-      this.$router.push({
-        path: "/",
-        query: {}
-      });
-    }
+    // goBack() {
+    //   this.$router.push({
+    //     path: "/",
+    //     query: {}
+    //   });
+    // }
   }
 };
 </script>

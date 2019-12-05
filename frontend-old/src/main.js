@@ -22,6 +22,7 @@ new Vue({
   },
   created() {
     this.$store.dispatch('loadRules')
+    this.$store.dispatch("getTableData", {mode:0});
   },
   destroyed(){
     this.$store.dispatch('disConnect',this.getConnectPort)

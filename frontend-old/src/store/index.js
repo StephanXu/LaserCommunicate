@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {Message} from 'element-ui'
+import { Message } from 'element-ui'
 import {
     settingsStore
 } from '../rpc'
@@ -26,7 +26,12 @@ let store = new Vuex.Store({
         getMaximized: (state) => state.isMaximized,
         getClientWidth: (state) => state.clientWidth,
         getClientHeight: (state) => state.clientHeight,
-        getFocus: (state) => state.isFocus
+        getFocus: (state) => state.isFocus,
+        getSpecifyValue: (state) => {
+            return (symbol) => {
+                return state.tableData.find((item) => (item.symbol === symbol))
+            }
+        }
     },
     mutations: {
         getTableData(state, rule) {
@@ -61,29 +66,36 @@ let store = new Vuex.Store({
         }
     },
     actions: {
+        // 获取温度数据
+        refreshSpecifyData(context, symbol) {
+            let index = context.state.tableData.findIndex((item) => (item.symbol === symbol))
+            get('/api/interface/' + context.state.tableData[index].id).then(res => {
+                context.state.tableData[index]['data'] = res.content
+            })
+        },
         // 获取功能参数列表表格数据
         getTableData(context, rule) {
             get("/api/interface", rule
-                ,{headers: {"Content-Type": "application/json"}}
+                , { headers: { "Content-Type": "application/json" } }
             ).then(response => {
                 var res = response.action
                 // get('/api/interface/all').then(response => {
                 //     console.log(response)
                 // })
-                for (let i = 0; i < res.length; i++) {
+                for (let i = 0; i < 10; i++) {
+                    Vue.set(res[i], 'index', i + 1)
                     get('/api/interface/' + res[i].id).then(response => {
                         Vue.set(res[i], 'data', response.content)
-                        Vue.set(res[i], 'index', i+1)
                     })
                 }
                 context.commit('getTableData', res)
             }).catch(() => {
-                Message.warning("获取数据失败！");
+                Message.warning("获取数据失败,请先选择串口连接！");
             })
             settingsStore.setRules(context.state.tableData)
         },
         // 初始化连接
-        initConnect(context,value) {
+        initConnect(context, value) {
             context.commit('connectPort', value)
             var body = {
                 "action": "activate",
@@ -104,7 +116,7 @@ let store = new Vuex.Store({
             })
         },
         // 断开连接
-        disConnect(context,value) {
+        disConnect(context, value) {
             var body = {
                 action: "deactivate",
                 deviceName: value,
