@@ -341,21 +341,27 @@ public:
 	}
 
 
-	int GetDataCache(std::shared_ptr<uint16_t[]> buffer,
-						  const size_t bufferSize,
-						  const unsigned int beginRegisterAddress,
-						  const size_t readNum) const
+	int GetData(uint16_t* buffer,
+				const size_t bufferSize,
+				const unsigned int beginRegisterAddress,
+				const size_t readNum,
+				const size_t maxReadUnit = 0x7d) const
 	{
 		std::lock_guard<std::mutex> lockGuard{ m_Mutex };
 		if (!m_IsValid || !m_Connection || !buffer)
 			return 0;
-		int readCount = modbus_read_registers(m_Connection,
-											  beginRegisterAddress,
-											  std::min(bufferSize / sizeof(uint16_t), readNum),
-											  buffer.get());
-		if (-1 == readCount)
+		int readCount{};
+		for (size_t i{}; i < std::min(bufferSize / sizeof(uint16_t), readNum); i += maxReadUnit)
 		{
-			throw IOError(IOError::IODirection::Out, beginRegisterAddress, errno);
+			int deltaReadCount = modbus_read_registers(m_Connection,
+													   beginRegisterAddress + i,
+													   std::min(readNum - i, maxReadUnit),
+													   buffer + i);
+			if (-1 == deltaReadCount)
+			{
+				throw IOError(IOError::IODirection::Out, beginRegisterAddress, errno);
+			}
+			readCount += deltaReadCount;
 		}
 		return readCount;
 	}
@@ -438,6 +444,80 @@ private:
 		m_SetFloatFunc(value, buffer);
 	}
 
+	// ======================Cache
+public:
+	void CreateCachePage(unsigned int beginAddress, size_t maxOffset)
+	{
+		for (auto&& item : m_CachePages)
+		{
+			if ((beginAddress >= item.beginAddress && beginAddress <= item.beginAddress + item.length) ||
+				(beginAddress + maxOffset >= item.beginAddress && beginAddress + maxOffset <= item.beginAddress + item.length) ||
+				(beginAddress <= item.beginAddress && beginAddress + maxOffset >= item.beginAddress + item.length))
+			{
+				throw std::invalid_argument("Cache page coincidence");
+			}
+		}
+		m_CachePages.push_back({
+			std::make_unique<uint16_t[]>(maxOffset + 1),
+			beginAddress,
+			maxOffset + 1 });
+	}
+
+	size_t ReadBufferFromCache(uint16_t* buffer,
+							   const size_t bufferSize,
+							   const unsigned int beginAddress, 
+							   const size_t readNum) const
+	{
+		for (auto&& item : m_CachePages)
+		{
+			if (beginAddress >= item.beginAddress && beginAddress <= item.beginAddress + item.length)
+			{
+				if (beginAddress - item.beginAddress + readNum > item.length)
+				{
+					spdlog::error("{},{},{},{}", beginAddress, item.beginAddress, readNum, item.length);
+					throw std::out_of_range("ReadNum out of range");
+				}
+				size_t readCount = std::min(bufferSize, readNum * sizeof(uint16_t));
+				std::memcpy(buffer,
+							item.buffer.get() + beginAddress - item.beginAddress,
+							readCount);
+				return readCount;
+			}
+		}
+	}
+
+	template<typename T>
+	T ReadFromCache(unsigned int registerAddress) const
+	{
+		std::lock_guard<std::mutex> lockGuard{ m_Mutex };
+		if (!m_IsValid || !m_Connection)
+			return 0;
+		constexpr size_t bufLength = sizeof(T) / sizeof(uint16_t) < 1 ?
+			1 : sizeof(T) / sizeof(uint16_t);
+		uint16_t buf[bufLength]{};
+		if (0 == ReadBufferFromCache(buf, bufLength * sizeof(uint16_t), registerAddress, bufLength))
+		{
+			throw IOError(IOError::IODirection::In, registerAddress, errno);
+		}
+		return GetNumFromBuffer<T, uint16_t>(buf, bufLength);
+	}
+
+	void RefreshCache()
+	{
+		for (auto&& item : m_CachePages)
+		{
+			GetData(item.buffer.get(), sizeof(uint16_t) * item.length, item.beginAddress, item.length);
+		}
+	}
+private:
+	struct CachePage
+	{
+		std::unique_ptr<uint16_t[]> buffer;
+		unsigned int beginAddress;
+		size_t length;
+	};
+
+	std::vector<CachePage> m_CachePages;
 };
 
 #endif // MODBUS_HPP
