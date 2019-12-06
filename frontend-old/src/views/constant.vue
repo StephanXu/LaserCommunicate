@@ -4,10 +4,10 @@ const sheetField = [
     propName: "index",
     text: "序号"
   },
-  {
-    propName: "symbol",
-    text: "数据名称"
-  },
+  // {
+  //   propName: "symbol",
+  //   text: "数据名称"
+  // },
   {
     propName: "desc",
     text: "数据描述"
