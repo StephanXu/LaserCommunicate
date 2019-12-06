@@ -111,8 +111,13 @@ void InterfaceController::Get(http_request message)
 	}
 	catch (...)
 	{
+#ifdef _DEBUG
 		message.reply(MakeErrorResponse(status_codes::InternalError,
 										boost::current_exception_diagnostic_information()));
+#else
+		message.reply(MakeErrorResponse(status_codes::InternalError,
+										"Undefined error"));
+#endif
 	}
 }
 

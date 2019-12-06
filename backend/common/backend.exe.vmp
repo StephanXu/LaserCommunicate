@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Document Version="2">
-    <Protection InputFileName="backend.exe" Options="1023432" VMCodeSectionName=".protect" OutputFileName="backend.protect.exe">
+    <Protection InputFileName="../out/build/x64-Release/backend/backend.exe" Options="1023432" VMCodeSectionName=".protect" OutputFileName="backend.protect.exe">
         <Messages />
         <Folders />
         <Procedures />
@@ -8,16 +8,16 @@
     </Protection>
     <DLLBox>
         <Folders />
-        <DLL Name="boost_date_time-vc142-mt-x64-1_71.dll" FileName="boost_date_time-vc142-mt-x64-1_71.dll" Options="1" />
-        <DLL Name="brotlicommon.dll" FileName="brotlicommon.dll" Options="1" />
-        <DLL Name="brotlidec.dll" FileName="brotlidec.dll" Options="1" />
-        <DLL Name="brotlienc.dll" FileName="brotlienc.dll" Options="1" />
-        <DLL Name="cpprest_2_10.dll" FileName="cpprest_2_10.dll" Options="1" />
-        <DLL Name="fmt.dll" FileName="fmt.dll" Options="1" />
-        <DLL Name="LIBEAY32.dll" FileName="LIBEAY32.dll" Options="1" />
-        <DLL Name="modbus.dll" FileName="modbus.dll" Options="1" />
-        <DLL Name="SSLEAY32.dll" FileName="SSLEAY32.dll" Options="1" />
-        <DLL Name="zlib1.dll" FileName="zlib1.dll" Options="1" />
+        <DLL Name="boost_date_time-vc142-mt-x64-1_71.dll" FileName="../out/build/x64-Release/backend/boost_date_time-vc142-mt-x64-1_71.dll" Options="1" />
+        <DLL Name="brotlicommon.dll" FileName="../out/build/x64-Release/backend/brotlicommon.dll" Options="1" />
+        <DLL Name="brotlidec.dll" FileName="../out/build/x64-Release/backend/brotlidec.dll" Options="1" />
+        <DLL Name="brotlienc.dll" FileName="../out/build/x64-Release/backend/brotlienc.dll" Options="1" />
+        <DLL Name="cpprest_2_10.dll" FileName="../out/build/x64-Release/backend/cpprest_2_10.dll" Options="1" />
+        <DLL Name="fmt.dll" FileName="../out/build/x64-Release/backend/fmt.dll" Options="1" />
+        <DLL Name="LIBEAY32.dll" FileName="../out/build/x64-Release/backend/LIBEAY32.dll" Options="1" />
+        <DLL Name="modbus.dll" FileName="../out/build/x64-Release/backend/modbus.dll" Options="1" />
+        <DLL Name="SSLEAY32.dll" FileName="../out/build/x64-Release/backend/SSLEAY32.dll" Options="1" />
+        <DLL Name="zlib1.dll" FileName="../out/build/x64-Release/backend/zlib1.dll" Options="1" />
     </DLLBox>
     <Script />
     <LicenseManager />
