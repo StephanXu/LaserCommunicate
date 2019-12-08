@@ -7,7 +7,7 @@ import echarts from 'echarts'
 import 'element-ui/lib/theme-chalk/index.css'
 import './icon/codicon.css'
 import { mapGetters } from "vuex";
-
+import { setInterval,clearInterval } from "timers";
 
 Vue.prototype.$echarts = echarts
 Vue.use(ElementUI)
@@ -17,15 +17,30 @@ new Vue({
   router,
   store,
   render: h => h(App),
+  data(){
+    return{
+      timer:null
+    }
+  },
   computed: {
-    ...mapGetters(["getConnectPort"])
+    ...mapGetters(["getConnectPort"]),
+    ...mapGetters(["getStyle"])
   },
   created() {
     this.$store.dispatch('loadRules')
-    this.$store.dispatch("getTableData", {mode:0});
+    this.refreshData()
   },
-  destroyed(){
+  beforeDestroy(){
     this.$store.dispatch('disConnect',this.getConnectPort)
+    clearInterval(this.timer)
+    this.timer=null
   },
+  methods:{
+    refreshData(){
+      this.timer=setInterval(()=>{
+        this.$store.dispatch("getTableData", {mode:this.getStyle});
+      },1000)
+    }
+  }
 })
 

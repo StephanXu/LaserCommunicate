@@ -140,10 +140,6 @@ export default {
       message: {},
       styleOptions: [
         {
-          value: "0",
-          label: "通用模式"
-        },
-        {
           value: "1",
           label: "温度反馈模式"
         },
@@ -156,7 +152,7 @@ export default {
           label: "电功率反馈模式"
         }
       ],
-      styleValue: "0",
+      styleValue: "1",
       portOptions: [
         {
           value: "\\\\.\\COM1",

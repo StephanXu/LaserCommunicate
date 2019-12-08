@@ -5,7 +5,9 @@
     <el-container>
       <el-scrollbar :style="mainViewStyle">
         <transition name="slide-fade">
+          <keep-alive>
           <router-view :style="routerViewStyle"></router-view>
+          </keep-alive>
         </transition>
       </el-scrollbar>
     </el-container>

@@ -14,7 +14,7 @@
   </el-container>
 </template>
 <script>
-import { setInterval } from "timers";
+import { setInterval,clearInterval } from "timers";
 import { mapGetters } from "vuex";
 
 Date.prototype.Format = function(fmt) {
@@ -54,6 +54,7 @@ export default {
   },
   data() {
     return {
+      timer:null,
       graphData: [],
       graphTime: [],
       resultTemp: "",
@@ -100,7 +101,11 @@ export default {
     };
   },
   mounted() {
-    this.drawLine();
+    this.drawLine()
+  },
+  beforeDestroy(){
+    clearInterval(this.timer)
+    this.timer = null
   },
   methods: {
     drawLine() {
@@ -108,7 +113,7 @@ export default {
       let myChart = this.$echarts.init(document.getElementById("myChart"));
       myChart.setOption(this.option);
       const _this = this;
-      setInterval(() => {
+      this.timer=setInterval(() => {
         _this.$store.dispatch("refreshSpecifyData", "RealTimeTemperature");
         let result =  _this.getSpecifyValue("RealTimeTemperature").data;
         _this.graphData.push(result);

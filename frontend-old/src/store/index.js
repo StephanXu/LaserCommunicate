@@ -13,6 +13,7 @@ let store = new Vuex.Store({
         connectPort: '',
         isMaximized: false,
         isFocus: true,
+        currentStyle: '1',
         tableData: [],
         comRules: [],
         clientWidth: 0,
@@ -22,7 +23,7 @@ let store = new Vuex.Store({
         getTable: (state) => state.tableData,
         getConnectPort: (state) => state.connectPort,
         getConnectStatus: (state) => state.connectStatus,
-        getRules: (state) => state.comRules,
+        getStyle: (state) => state.currentStyle,
         getMaximized: (state) => state.isMaximized,
         getClientWidth: (state) => state.clientWidth,
         getClientHeight: (state) => state.clientHeight,
@@ -43,8 +44,8 @@ let store = new Vuex.Store({
         connectStatus(state, rule) {
             state.connectStatus = rule
         },
-        addNewRule(state, rule) {
-            state.comRules.push(rule)
+        chooseStyle(state, rule) {
+            state.currentStyle = rule
         },
         removeRule(state, rule) {
             state.comRules.splice(state.comRules.findIndex((val) => val === rule), 1)
@@ -75,22 +76,16 @@ let store = new Vuex.Store({
         },
         // 获取功能参数列表表格数据
         getTableData(context, rule) {
-            get("/api/interface", rule
+            get("/api/interface/all", rule
                 , { headers: { "Content-Type": "application/json" } }
             ).then(response => {
-                var res = response.action
-                // get('/api/interface/all').then(response => {
-                //     console.log(response)
-                // })
-                for (let i = 0; i < res.length; i++) {
-                    Vue.set(res[i], 'index', i + 1)
-                    get('/api/interface/' + res[i].id).then(response => {
-                        Vue.set(res[i], 'data', response.content)
-                    })
-                }
+                var res = response.content
                 context.commit('getTableData', res)
+                for (let i = 0; i < res.length; i++) {
+                            Vue.set(res[i], 'index', i + 1)
+                }   
             }).catch(() => {
-                Message.warning("获取数据失败,请先选择串口连接！");
+                // Message.warning("获取数据失败,请先选择串口连接！");
             })
             settingsStore.setRules(context.state.tableData)
         },
@@ -137,8 +132,9 @@ let store = new Vuex.Store({
                     Message.error("断开连接失败！");
                 })
         },
-        addNewRule(context, rule) {
-            context.commit('addNewRule', rule)
+        // 选择模式
+        chooseStyle(context, rule) {
+            context.commit('chooseStyle', rule)
             settingsStore.setRules(context.state.comRules)
         },
         loadRules(context) {
