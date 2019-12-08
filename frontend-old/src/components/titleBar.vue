@@ -69,7 +69,8 @@ export default Vue.extend({
 .title-bar {
   -webkit-app-region: drag;
   height: 35px;
-  background-color: #2b579a;
+  background-color: #ddd1;
+  /* background-color: #2b579a11; */
   display: flex;
   display: -webkit-flex;
   color: #000;
@@ -78,7 +79,8 @@ export default Vue.extend({
 
 .title-text {
   line-height: 35px;
-  color: #fff;
+  color: #111111;
+  /* color: #fff; */
   font-size: 0.8em;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
@@ -88,7 +90,8 @@ export default Vue.extend({
 
 .app-icon {
   line-height: 35px;
-  color: #fff;
+  color: #111111;
+  /* color: #fff; */
   width: 35px;
   text-align: center;
   transition: 0.3s;
@@ -101,7 +104,8 @@ export default Vue.extend({
 }
 
 .control-btn {
-  color: rgb(255, 255, 255);
+  color: #111111;
+  /* color: rgb(255, 255, 255); */
   position: relative;
   top: 0px;
   width: 45px;
@@ -117,7 +121,8 @@ export default Vue.extend({
 }
 
 .control-btn:hover {
-  color: rgb(255, 255, 255);
+  color: #111111;
+  /* color: rgb(255, 255, 255); */
   position: relative;
   right: 0px;
   top: 0px;
@@ -129,27 +134,28 @@ export default Vue.extend({
   transition: 0.5s;
   -webkit-app-region: no-drag;
   display: inline-block;
-  background-color: #124078;
+  background-color: #11111133;
+  /* background-color: #124078cc; */
   font-size: 0.9em;
   text-align: center;
 }
 
 .window-lost-focus {
-  color: #7b7b7b;
+  color: #7b7b7bcc;
   transition: 0.3s;
 }
 
 .window-lost-focus:hover {
-  background-color: #c6c6c6;
+  background-color: #c6c6c6cc;
   transition: 0.3s;
 }
 
 .control-btn-close:hover {
-  background-color: #e81123;
+  background-color: #e81123cc;
 }
 
 .title-bar-window-lost-focus{
-  background-color: #dddddd;
+  background-color: #ddddddcc;
   transition: 0.3s;
 }
 

@@ -2,7 +2,8 @@
 const sheetField = [
   {
     propName: "index",
-    text: "序号"
+    text: "序号",
+    width: "50"
   },
   // {
   //   propName: "symbol",
@@ -10,11 +11,13 @@ const sheetField = [
   // },
   {
     propName: "desc",
-    text: "数据描述"
+    text: "数据描述",
+    width:""
   },
   {
     propName: "data",
-    text: "当前数值"
+    text: "当前数值",
+    width:"100"
   }
 ];
 

@@ -15,6 +15,7 @@
                 :label="item.label"
                 :value="item.value"
               ></el-option>
+
             </el-select>
             <el-select v-model="styleValue" placeholder="请选择模式" @change="chooseStyle(value)">
               <el-option
@@ -29,6 +30,7 @@
               v-if="!getConnectStatus"
               @click="initConnect()"
               icon="el-icon-circle-check"
+              style="margin-left: 5px"
             >连接</el-button>
             <el-button
               class="connectButton"
@@ -43,14 +45,16 @@
     <el-main>
       <el-table 
       :data="getTable.filter(data => !search || data.desc.toLowerCase().includes(search.toLowerCase()))"
-       ref="multipleTable" tooltip-effect="dark" height="550">
+       ref="multipleTable" tooltip-effect="dark">
         <el-table-column
           v-for="item in sheetConfig"
           :key="item.propName"
           :prop="item.propName"
           :label="item.text"
+          :width="item.width"
+          resizable
         ></el-table-column>
-        <el-table-column  label="设置">
+        <el-table-column label="设置" width="80">
           <template slot-scope="scope">
             <el-button
               v-if="writable(scope.row)"
@@ -58,13 +62,13 @@
               size="mini"
               @click="handleCurrentChange(scope.row)"
             >发送</el-button>
-            <el-button v-else type="danger" size="mini" disabled>只读</el-button>
+            <el-button v-else type="" size="mini" disabled>只读</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-main>
 
-    <el-dialog title="发送设置" :visible.sync="isAddRuleVisile" width="60%" @close="handleClose">
+    <el-dialog title="发送设置" :visible.sync="isAddRuleVisile" append-to-body custom-class="write-dialog" width="50%" @close="handleClose">
       <add-rule ref="addRule" :row="message" :on-close="handleAddRule"></add-rule>
     </el-dialog>
   </el-container>
@@ -80,8 +84,10 @@ export default {
     "add-rule": AddRule
   },
   computed: {
-    ...mapGetters(["getTable"]),
-    ...mapGetters(["getConnectStatus"]),
+    ...mapGetters(["getTable","getConnectStatus"]),
+    writeDialogClass(){
+      return 'write-dialog'
+    }
   },
   methods: {
     // 断开连接
@@ -212,4 +218,5 @@ export default {
   align-items: center;
   height: 75px;
 }
+
 </style>

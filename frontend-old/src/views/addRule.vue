@@ -24,8 +24,8 @@
           <el-input v-model="formData.dataValue"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit('formData')" icon="el-icon-check">立即发送</el-button>
-          <el-button type="danger" @click="resetForm('formData')" icon="el-icon-close">取消</el-button>
+          <el-button class="connectButton" type="primary" @click="onSubmit('formData')" icon="el-icon-check">立即发送</el-button>
+          <el-button class="connectButton" type="danger" @click="resetForm('formData')" icon="el-icon-close">取消</el-button>
         </el-form-item>
       </el-form>
     </el-main>

@@ -1,12 +1,15 @@
 <template>
   <div id="app">
-    <title-bar />
-    <navigate-bar />
     <el-container>
       <el-scrollbar :style="mainViewStyle">
+        <div style="position:fixed;z-index:1000;backdrop-filter: saturate(180%) blur(20px);">
+          <title-bar />
+          <navigate-bar />
+        </div>
+        <div style="height:75px;" />
         <transition name="slide-fade">
           <keep-alive>
-          <router-view :style="routerViewStyle"></router-view>
+            <router-view :style="routerViewStyle"></router-view>
           </keep-alive>
         </transition>
       </el-scrollbar>
@@ -30,13 +33,13 @@ export default {
     ...mapGetters(["getMaximized", "getClientWidth", "getClientHeight"]),
     mainViewStyle() {
       return {
-        height: `${this.getClientHeight - 35 - 40}px`,
+        height: `${this.getClientHeight}px`,
         width: `${this.getClientWidth}px`
       };
     },
     routerViewStyle() {
       return {
-        position:'absolute',
+        // position: "absolute",
         width: `${this.getClientWidth}px`
       };
     }
