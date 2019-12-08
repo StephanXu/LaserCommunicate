@@ -74,6 +74,16 @@ let store = new Vuex.Store({
                 context.state.tableData[index]['data'] = res.content
             })
         },
+        // 设置功能参数列表表格数据
+        setSingleData(context, rule) {
+            let index = context.state.tableData.findIndex((item) => (item.symbol === rule.symbol))
+            post('/api/interface/' + context.state.tableData[index].id,JSON.stringify({value: rule.value})
+            , { headers: { "Content-Type": "application/json" } }).then(() => {
+                Message.success("设置成功！"); 
+            }).catch(() => {
+                // Message.warning("获取数据失败,请先选择串口连接！");
+            })
+        },
         // 获取功能参数列表表格数据
         getTableData(context, rule) {
             get("/api/interface/all", rule

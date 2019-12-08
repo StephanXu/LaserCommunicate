@@ -77,9 +77,10 @@ export default {
         this.formData.dataValue = ""
       } else {
         var params = {
+          symbol: this.formData.symbol,
           value: this.formData.dataValue
         };
-        this.$store.dispatch("getTableData", params);
+        this.$store.dispatch("setSingleData", params);
         this.resetForm(formName);
       }
     },
