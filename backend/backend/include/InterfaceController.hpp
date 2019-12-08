@@ -37,7 +37,7 @@ private:
 
 	void Get(http_request message);
 
-	void Patch(http_request message);
+	void Post(http_request message);
 
 	void LoadConfiguration();
 

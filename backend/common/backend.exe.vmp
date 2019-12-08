@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Document Version="2">
-    <Protection InputFileName="../out/build/x64-Release/backend/backend.exe" Options="1023432" VMCodeSectionName=".protect" OutputFileName="backend.protect.exe">
+    <Protection InputFileName="../out/build/x64-Release/backend/backend.exe" Options="1023432" VMCodeSectionName=".protect" OutputFileName="../out/dist/backend.exe">
         <Messages />
         <Folders />
         <Procedures />

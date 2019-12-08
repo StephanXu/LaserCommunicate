@@ -2,6 +2,7 @@
 #include "InterfaceController.hpp"
 #include "modbus.h"
 #include "utils.hpp"
+#include "ConfigurationFileContent.hpp"
 
 #include <cpprest/http_msg.h>
 #include <cpprest/uri.h>
@@ -22,7 +23,7 @@ InterfaceController::InterfaceController(utility::string_t url, UartModbus* uart
 {
 	LoadConfiguration();
 	m_Listener.support(methods::GET, std::bind(&InterfaceController::Get, this, std::placeholders::_1));
-	m_Listener.support(methods::PATCH, std::bind(&InterfaceController::Patch, this, std::placeholders::_1));
+	m_Listener.support(methods::POST, std::bind(&InterfaceController::Post, this, std::placeholders::_1));
 }
 
 InterfaceController::~InterfaceController()
@@ -121,7 +122,7 @@ void InterfaceController::Get(http_request message)
 	}
 }
 
-void InterfaceController::Patch(http_request message)
+void InterfaceController::Post(http_request message)
 {
 	std::vector<string_t> paths = uri::split_path(message.relative_uri().path());
 	if (paths.size() < 1)
@@ -175,12 +176,14 @@ void InterfaceController::LoadConfiguration()
 	m_Modbus->CreateCachePage(0x3800, 0x01ff); //voltage records
 
 	boost::property_tree::ptree config;
-	std::ifstream f("Config.json");
+	std::string configContent(reinterpret_cast<char*>(configJson), configJsonLen);
+	std::istringstream configContentStream(configContent);
+	/*std::ifstream f("Config.json");
 	if (!f.is_open())
 	{
 		throw std::runtime_error("Can't open config file.");
-	}
-	boost::property_tree::read_json(f, config);
+	}*/
+	boost::property_tree::read_json(configContentStream, config);
 	for (auto&& item : config.get_child("action"))
 	{
 		std::string dataType = item.second.get<std::string>("dataType");

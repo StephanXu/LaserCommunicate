@@ -18,7 +18,7 @@ const initConfig =
 
 const exec = require('child_process').exec
 
-let cmdStr = 'backend.exe'
+let cmdStr = '".\\resources\\bin\\backend.exe"'
 // 执行cmd命令的目录，如果使用cd xx && 上面的命令，这种将会无法正常退出子进程
 let cmdPath = '' 
 // 子进程名称
@@ -62,7 +62,6 @@ function createWindow() {
         protocol: 'file:',
         slashes: true
       });
-      console.log(startUrl)
       mainWindow.loadURL(startUrl)
     // mainWindow.loadURL('app://' + __dirname + '/frontend-old/dist/index.html')
     // mainWindow.loadURL('http://localhost:8080')
@@ -89,9 +88,9 @@ function createWindow() {
         mainWindow.webContents.send('windowFocus', 'blur')
     })
 
-    mainWindow.openDevTools({
-        mode: 'bottom'
-    })
+    // mainWindow.openDevTools({
+    //     mode: 'bottom'
+    // })
 }
 
 app.on('ready', createWindow)
