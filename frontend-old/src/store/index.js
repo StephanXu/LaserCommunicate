@@ -13,7 +13,6 @@ let store = new Vuex.Store({
         connectPort: '',
         isMaximized: false,
         isFocus: true,
-        currentStyle: '1',
         tableData: [],
         comRules: [],
         clientWidth: 0,
@@ -24,7 +23,6 @@ let store = new Vuex.Store({
         getTable: (state) => state.tableData,
         getConnectPort: (state) => state.connectPort,
         getConnectStatus: (state) => state.connectStatus,
-        getStyle: (state) => state.currentStyle,
         getMaximized: (state) => state.isMaximized,
         getClientWidth: (state) => state.clientWidth,
         getClientHeight: (state) => state.clientHeight,
@@ -46,9 +44,6 @@ let store = new Vuex.Store({
         connectStatus(state, rule) {
             state.connectStatus = rule
         },
-        chooseStyle(state, rule) {
-            state.currentStyle = rule
-        },
         removeRule(state, rule) {
             state.comRules.splice(state.comRules.findIndex((val) => val === rule), 1)
         },
@@ -68,7 +63,7 @@ let store = new Vuex.Store({
             state.isFocus = isFocus
         },
         setMode(state, mode){
-            state.mode=mode
+            state.mode = mode
         }
     },
     actions: {
@@ -82,9 +77,6 @@ let store = new Vuex.Store({
         // 设置功能参数列表表格数据
         setSingleData(context, rule) {
             let index = context.state.tableData.findIndex((item) => (item.symbol === rule.symbol))
-            console.log('symb',context.state.tableData[index].symbol);
-            console.log('id',context.state.tableData[index].id);
-            console.log(rule)
             post('/api/interface/' + context.state.tableData[index].id,JSON.stringify({value: rule.value})
             , { headers: { "Content-Type": "application/json" } }).then(() => {
                 Message.success("设置成功！"); 
@@ -92,13 +84,14 @@ let store = new Vuex.Store({
                 // Message.warning("获取数据失败,请先选择串口连接！");
             })
         },
+        // 选择模式
         setCurtMode(context, mode){
             context.dispatch('setSingleData',{symbol:'Index1_ControlFeedbackMode', value: mode})
             context.commit('setMode', mode)
         },
         // 获取功能参数列表表格数据
         getTableData(context) {
-            get("/api/interface/all", { mode: context.getMode }
+            get("/api/interface/all?mode="+context.state.mode, { mode: context.getMode }
                 , { headers: { "Content-Type": "application/json" } }
             ).then(response => {
                 var res = response.content
@@ -153,12 +146,6 @@ let store = new Vuex.Store({
                 .catch(() => {
                     Message.error("断开连接失败！");
                 })
-        },
-        // 选择模式
-        chooseStyle(context, rule) {
-            context.commit('chooseStyle', rule)
-            context.dispatch('setSingleData',{symbol:'Index1_ControlFeedbackMode', value: rule})
-            settingsStore.setRules(context.state.comRules)
         },
         loadRules(context) {
             context.commit('setRules', settingsStore.loadRules())

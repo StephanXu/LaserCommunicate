@@ -24,7 +24,6 @@ new Vue({
   },
   computed: {
     ...mapGetters(["getConnectPort"]),
-    ...mapGetters(["getStyle"])
   },
   created() {
     this.$store.dispatch('loadRules')

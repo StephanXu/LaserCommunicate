@@ -20,12 +20,26 @@
         <el-form-item label="数据描述:">
           <span>{{row.desc}}</span>
         </el-form-item>
+        <el-form-item label="数据格式:">
+          <el-radio v-model="radio" label="1">十进制</el-radio>
+          <el-radio v-model="radio" label="2">十六进制</el-radio>
+        </el-form-item>
         <el-form-item label="设置数值" prop="dataValue">
           <el-input v-model="formData.dataValue"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="connectButton" type="primary" @click="onSubmit('formData')" icon="el-icon-check">立即发送</el-button>
-          <el-button class="connectButton" type="danger" @click="resetForm('formData')" icon="el-icon-close">取消</el-button>
+          <el-button
+            class="connectButton"
+            type="primary"
+            @click="onSubmit('formData')"
+            icon="el-icon-check"
+          >立即发送</el-button>
+          <el-button
+            class="connectButton"
+            type="danger"
+            @click="resetForm('formData')"
+            icon="el-icon-close"
+          >取消</el-button>
         </el-form-item>
       </el-form>
     </el-main>
@@ -43,11 +57,20 @@ export default {
   data() {
     //判断字符串是否为数字 （判断正整数 /^[1-9]+[0-9]*]*$/）
     var checkNum = (rule, num, callback) => {
-      var re = /^[0-9]+.?[0-9]*$/;
-      if (!re.test(num)) {
-        callback(new Error("请输入数字"));
+      if (this.radio === "1") {
+        var rea = /^[-+]?(([0-9]+)([.]([0-9]+))?|([.]([0-9]+))?)$/;
+        if (!rea.test(num)) {
+          callback(new Error("请输入十进制数字"));
+        }
+        return true;
       }
-      return true;
+      if (this.radio === "2") {
+        var reb = /^([0-9|a-z|A-Z]*)$/;
+        if (!reb.test(num)) {
+          callback(new Error("请输入十六进制数字"));
+        }
+        return true;
+      }
     };
     return {
       formData: {
@@ -56,6 +79,7 @@ export default {
         data: this.row.data ? this.row.data : 0,
         dataValue: ""
       },
+      radio: "1",
       sheetField: global.sheetField,
       rules: {
         dataValue: [
@@ -69,19 +93,34 @@ export default {
     // 提交表单
     onSubmit(formName) {
       // var re = /^[0-9]+.?[0-9]*$/;
-      var re = /^[-+]?(([0-9]+)([.]([0-9]+))?|([.]([0-9]+))?)$/;
+      var rea = /^[-+]?(([0-9]+)([.]([0-9]+))?|([.]([0-9]+))?)$/;
+      var reb = /^([0-9|a-z|A-Z]*)$/;
       if (this.formData.dataValue == "") {
         this.$message.warning("设置值不能为空");
-      } else if (!re.test(this.formData.dataValue)) {
-        this.$message.warning("请输入数字！");
-        this.formData.dataValue = ""
-      } else {
-        var params = {
-          symbol: this.row.symbol,
-          value: this.formData.dataValue
-        };
-        this.$store.dispatch("setSingleData", params);
-        this.resetForm(formName);
+      } else if (this.radio === "1") {
+        if (!rea.test(this.formData.dataValue)) {
+          this.$message.warning("请输入十进制数字！");
+          this.formData.dataValue = "";
+        } else {
+          var paramsa = {
+            symbol: this.row.symbol,
+            value: this.formData.dataValue
+          };
+          this.$store.dispatch("setSingleData", paramsa);
+          this.resetForm(formName);
+        }
+      } else if (this.radio === "2") {
+        if (!reb.test(this.formData.dataValue)) {
+          this.$message.warning("请输入十六进制数字！");
+          this.formData.dataValue = "";
+        } else {
+          var paramsb = {
+            symbol: this.row.symbol,
+            value: eval('0x'+this.formData.dataValue).toString(10)
+          };
+          this.$store.dispatch("setSingleData", paramsb);
+          this.resetForm(formName);
+        }
       }
     },
     resetForm(formName) {

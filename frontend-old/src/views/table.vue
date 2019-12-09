@@ -17,7 +17,7 @@
               ></el-option>
 
             </el-select>
-            <el-select v-model="styleValue" placeholder="请选择模式" @change="chooseStyle(value)">
+            <el-select v-model="styleValue" placeholder="请选择模式" @change="chooseStyle">
               <el-option
                 v-for="item in styleOptions"
                 :key="item.value"
@@ -109,8 +109,7 @@ export default {
     },
     // 选择模式
     chooseStyle(value) {
-      console.log('value',value);
-      this.$store.dispatch("chooseStyle", value);
+      this.$store.dispatch("setCurtMode", value);
     },
     // 判断是否可写
     writable(row) {
