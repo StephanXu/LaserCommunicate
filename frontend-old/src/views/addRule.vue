@@ -77,7 +77,7 @@ export default {
         this.formData.dataValue = ""
       } else {
         var params = {
-          symbol: this.formData.symbol,
+          symbol: this.row.symbol,
           value: this.formData.dataValue
         };
         this.$store.dispatch("setSingleData", params);

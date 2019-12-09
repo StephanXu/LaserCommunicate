@@ -38,7 +38,7 @@ new Vue({
   methods:{
     refreshData(){
       this.timer=setInterval(()=>{
-        this.$store.dispatch("getTableData", {mode:this.getStyle});
+        this.$store.dispatch("getTableData");
       },1000)
     }
   }

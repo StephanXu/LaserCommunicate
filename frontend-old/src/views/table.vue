@@ -94,7 +94,7 @@ export default {
     disconnect() {
       var value = this.portValue;
       this.$store.dispatch("disConnect", value);
-      this.$store.dispatch("getTableData", { mode: this.styleValue });
+      this.$store.dispatch("getTableData");
       this.portValue = "";
     },
     // 先选择串口，然后连接
@@ -104,15 +104,13 @@ export default {
         this.$message.warning("请先选择串口！");
       } else {
         this.$store.dispatch("initConnect", value);
-        this.$store.dispatch("getTableData", { mode: this.styleValue });
+        this.$store.dispatch("getTableData");
       }
     },
     // 选择模式
     chooseStyle(value) {
-      var params = {
-        mode: value
-      };
-      this.$store.dispatch("getTableData", params);
+      console.log('value',value);
+      this.$store.dispatch("chooseStyle", value);
     },
     // 判断是否可写
     writable(row) {
