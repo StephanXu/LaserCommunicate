@@ -95,10 +95,11 @@ let store = new Vuex.Store({
                 , { headers: { "Content-Type": "application/json" } }
             ).then(response => {
                 var res = response.content
-                context.commit('getTableData', res)
                 for (let i = 0; i < res.length; i++) {
-                            Vue.set(res[i], 'index', i + 1)
-                }   
+                    Vue.set(res[i], 'index', i + 1)
+                    res[i].data=Number(res[i].data)*parseFloat(res[i].scale).toFixed(3)
+        } 
+                context.commit('getTableData', res)  
             }).catch(() => {
                 // Message.warning("获取数据失败,请先选择串口连接！");
             })
