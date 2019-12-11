@@ -8,7 +8,8 @@
 
 #include <iostream>
 #include <string>
-#include <unordered_map>
+#include <vector>
+#include <tuple>
 #include <memory>
 
 using namespace web;
@@ -41,7 +42,21 @@ private:
 
 	void LoadConfiguration();
 
-	std::unordered_map<std::string, std::unique_ptr<InterfaceWrapper>> m_Interfaces;
+	using InterfacePair = std::tuple<std::string, std::unique_ptr<InterfaceWrapper>>;
+	std::vector<InterfacePair> m_Interfaces;
+	class InterfaceFilter
+	{
+	public:
+		explicit InterfaceFilter(std::string target) :m_Target(target) {}
+		bool operator()(const InterfacePair& item)
+		{
+			return !m_Target.compare(std::get<0>(item));
+		}
+	private:
+		std::string m_Target;
+	};
+	
+	//std::map<std::string, std::unique_ptr<InterfaceWrapper>> m_Interfaces;
 	UartModbus* m_Modbus = nullptr;
 	http_listener m_Listener;
 };

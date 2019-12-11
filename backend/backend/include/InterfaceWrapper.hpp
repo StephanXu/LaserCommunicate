@@ -17,13 +17,15 @@ public:
 																  std::string symbol,
 																  std::string describe,
 																  bool writable,
-																  unsigned int availableInMode)
+																  unsigned int availableInMode,
+																  float scale)
 	{
 		std::unique_ptr<InterfaceWrapper> ret(new InterfaceWrapper(registerAddress,
 																   symbol,
 																   describe,
 																   writable,
-																   availableInMode));
+																   availableInMode,
+																   scale));
 		ret->m_IOPort.reset(new InterfaceImpl<T>(instance, registerAddress, writable));
 		return ret;
 	}
@@ -48,18 +50,21 @@ public:
 	std::string Describe() const noexcept { return m_Describe; }
 	bool Writable() const noexcept { return m_Writable; }
 	unsigned int AvailableInMode()const noexcept { return m_AvailableInMode; }
+	float Scale()const noexcept { return m_Scale; }
 
 private:
 	InterfaceWrapper(unsigned int registerAddress,
 					 std::string symbol,
 					 std::string describe,
 					 bool writable,
-					 unsigned int availableInMode) noexcept
+					 unsigned int availableInMode,
+					 float scale) noexcept
 		: m_RegisterAddress(registerAddress)
 		, m_Symbol(symbol)
 		, m_Describe(describe)
 		, m_Writable(writable)
 		, m_AvailableInMode(availableInMode)
+		, m_Scale(scale)
 	{
 	}
 private:
@@ -69,6 +74,7 @@ private:
 	std::string m_Describe;
 	bool m_Writable;
 	unsigned int m_AvailableInMode;
+	float m_Scale;
 
 	class IInterface
 	{
@@ -106,13 +112,13 @@ private:
 		template<typename __Ty>
 		struct StringConverter
 		{
-			static T StringToNum(const std::string value) { return strtol(value.c_str(), NULL, 10); }
+			static T StringToNum(const std::string value) { return std::strtol(value.c_str(), NULL, 10); }
 		};
 
 		template<>
 		struct StringConverter <float>
 		{
-			static float StringToNum(const std::string value) { return strtof(value.c_str(), NULL); }
+			static float StringToNum(const std::string value) { return std::strtof(value.c_str(), NULL); }
 		};
 
 		void Write(const std::string& value)override
