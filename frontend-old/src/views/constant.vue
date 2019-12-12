@@ -20,8 +20,17 @@ const sheetField = [
     width:"100"
   }
 ];
-
+var portOptions = []
+      for(var i=1;i<257;i++){
+        portOptions.push(
+          {
+          value: "\\\\.\\COM"+i,
+          label: "COM"+i
+          }
+        )
+      }
 export default {
-  sheetField
+  sheetField,
+  portOptions
 };
 </script>

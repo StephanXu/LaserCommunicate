@@ -60,12 +60,14 @@ export default {
       resultTemp: "",
       option: {
         xAxis: {
+          name:"当前时间",
           type: "category",
           boundaryGap: false,
           minInterval: 1,
           data: []
         },
         yAxis: {
+          name:"当前温度（℃）",
           type: "value",
           boundaryGap: [0, "100%"]
         },
@@ -126,7 +128,7 @@ export default {
         _this.option.xAxis.data = _this.graphTime;
         myChart.setOption(_this.option);
         myChart.resize();
-      }, 1000);
+      }, 80);
     },
     // goBack() {
     //   this.$router.push({

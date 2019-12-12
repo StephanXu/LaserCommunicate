@@ -54,14 +54,14 @@
           :width="item.width"
           resizable
         ></el-table-column>
-        <el-table-column label="设置" width="80">
+        <el-table-column label="操作" width="80">
           <template slot-scope="scope">
             <el-button
               v-if="writable(scope.row)"
               type="success"
               size="mini"
               @click="handleCurrentChange(scope.row)"
-            >发送</el-button>
+            >设置</el-button>
             <el-button v-else type="" size="mini" disabled>只读</el-button>
           </template>
         </el-table-column>
@@ -156,48 +156,7 @@ export default {
         }
       ],
       styleValue: "1",
-      portOptions: [
-        {
-          value: "\\\\.\\COM1",
-          label: "COM1"
-        },
-        {
-          value: "\\\\.\\COM2",
-          label: "COM2"
-        },
-        {
-          value: "\\\\.\\COM3",
-          label: "COM3"
-        },
-        {
-          value: "\\\\.\\COM4",
-          label: "COM4"
-        },
-        {
-          value: "\\\\.\\COM5",
-          label: "COM5"
-        },
-        {
-          value: "\\\\.\\COM6",
-          label: "COM6"
-        },
-        {
-          value: "\\\\.\\COM7",
-          label: "COM7"
-        },
-        {
-          value: "\\\\.\\COM8",
-          label: "COM8"
-        },
-        {
-          value: "\\\\.\\COM9",
-          label: "COM9"
-        },
-        {
-          value: "\\\\.\\COM10",
-          label: "COM10"
-        }
-      ],
+      portOptions: global.portOptions,
       portValue: ""
     };
   }
