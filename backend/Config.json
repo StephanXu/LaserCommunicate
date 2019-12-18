@@ -1,6 +1,636 @@
 {
     "action": [
         {
+            "register": "0x0120",
+            "symbol": "Index1_OperationType",
+            "dataType": "U16",
+            "desc": "操作模式：1：外控（计算机板卡输出来控制），2：内控控点焊（软件命令，脚踏板，IO触发），3：保留，4：内控控拖焊（软件命令，脚踏板，IO触发），其他：保留，没有使用",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0121",
+            "symbol": "Index1_ControlFeedbackMode",
+            "dataType": "U16",
+            "desc": "设置控制反馈方式：（加工模式）1：目标温度反馈，2：激光功率反馈，3：激光器恒定输入功率，其他：保留备用",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": 0
+        },
+        {
+            "register": "0x0122",
+            "symbol": "Index1_TotalSegments",
+            "dataType": "U16",
+            "desc": "总有效段数，范围： 1-16  （最大16段）",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0123",
+            "symbol": "Index1_UpperLimitOfPower",
+            "dataType": "U16",
+            "desc": "（当前索引内）焊接功率上限：% 范围：0-100",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0124",
+            "symbol": "Index1_Seg1_Temp",
+            "dataType": "U16",
+            "desc": "第1段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0124",
+            "symbol": "Index1_Seg1_LaserPower",
+            "dataType": "U16",
+            "desc": "第1段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0124",
+            "symbol": "Index1_Seg1_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第1段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0125",
+            "symbol": "Index1_Seg1_Time",
+            "dataType": "U32",
+            "desc": "第1段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0128",
+            "symbol": "Index1_Seg2_Temp",
+            "dataType": "U16",
+            "desc": "第2段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0128",
+            "symbol": "Index1_Seg2_LaserPower",
+            "dataType": "U16",
+            "desc": "第2段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0128",
+            "symbol": "Index1_Seg2_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第2段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0129",
+            "symbol": "Index1_Seg2_Time",
+            "dataType": "U32",
+            "desc": "第2段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x012c",
+            "symbol": "Index1_Seg3_Temp",
+            "dataType": "U16",
+            "desc": "第3段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x012c",
+            "symbol": "Index1_Seg3_LaserPower",
+            "dataType": "U16",
+            "desc": "第3段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x012c",
+            "symbol": "Index1_Seg3_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第3段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x012d",
+            "symbol": "Index1_Seg3_Time",
+            "dataType": "U32",
+            "desc": "第3段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0130",
+            "symbol": "Index1_Seg4_Temp",
+            "dataType": "U16",
+            "desc": "第4段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0130",
+            "symbol": "Index1_Seg4_LaserPower",
+            "dataType": "U16",
+            "desc": "第4段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0130",
+            "symbol": "Index1_Seg4_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第4段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0131",
+            "symbol": "Index1_Seg4_Time",
+            "dataType": "U32",
+            "desc": "第4段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0134",
+            "symbol": "Index1_Seg5_Temp",
+            "dataType": "U16",
+            "desc": "第5段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0134",
+            "symbol": "Index1_Seg5_LaserPower",
+            "dataType": "U16",
+            "desc": "第5段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0134",
+            "symbol": "Index1_Seg5_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第5段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0135",
+            "symbol": "Index1_Seg5_Time",
+            "dataType": "U32",
+            "desc": "第5段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0138",
+            "symbol": "Index1_Seg6_Temp",
+            "dataType": "U16",
+            "desc": "第6段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0138",
+            "symbol": "Index1_Seg6_LaserPower",
+            "dataType": "U16",
+            "desc": "第6段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0138",
+            "symbol": "Index1_Seg6_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第6段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0139",
+            "symbol": "Index1_Seg6_Time",
+            "dataType": "U32",
+            "desc": "第6段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x013c",
+            "symbol": "Index1_Seg7_Temp",
+            "dataType": "U16",
+            "desc": "第7段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x013c",
+            "symbol": "Index1_Seg7_LaserPower",
+            "dataType": "U16",
+            "desc": "第7段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x013c",
+            "symbol": "Index1_Seg7_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第7段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x013d",
+            "symbol": "Index1_Seg7_Time",
+            "dataType": "U32",
+            "desc": "第7段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0140",
+            "symbol": "Index1_Seg8_Temp",
+            "dataType": "U16",
+            "desc": "第8段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0140",
+            "symbol": "Index1_Seg8_LaserPower",
+            "dataType": "U16",
+            "desc": "第8段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0140",
+            "symbol": "Index1_Seg8_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第8段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0141",
+            "symbol": "Index1_Seg8_Time",
+            "dataType": "U32",
+            "desc": "第8段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0144",
+            "symbol": "Index1_Seg9_Temp",
+            "dataType": "U16",
+            "desc": "第9段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0144",
+            "symbol": "Index1_Seg9_LaserPower",
+            "dataType": "U16",
+            "desc": "第9段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0144",
+            "symbol": "Index1_Seg9_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第9段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0145",
+            "symbol": "Index1_Seg9_Time",
+            "dataType": "U32",
+            "desc": "第9段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0148",
+            "symbol": "Index1_Seg10_Temp",
+            "dataType": "U16",
+            "desc": "第10段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0148",
+            "symbol": "Index1_Seg10_LaserPower",
+            "dataType": "U16",
+            "desc": "第10段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0148",
+            "symbol": "Index1_Seg10_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第10段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0149",
+            "symbol": "Index1_Seg10_Time",
+            "dataType": "U32",
+            "desc": "第10段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x014c",
+            "symbol": "Index1_Seg11_Temp",
+            "dataType": "U16",
+            "desc": "第11段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x014c",
+            "symbol": "Index1_Seg11_LaserPower",
+            "dataType": "U16",
+            "desc": "第11段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x014c",
+            "symbol": "Index1_Seg11_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第11段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0149",
+            "symbol": "Index1_Seg11_Time",
+            "dataType": "U32",
+            "desc": "第11段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0150",
+            "symbol": "Index1_Seg12_Temp",
+            "dataType": "U16",
+            "desc": "第12段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0150",
+            "symbol": "Index1_Seg12_LaserPower",
+            "dataType": "U16",
+            "desc": "第12段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0150",
+            "symbol": "Index1_Seg12_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第12段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0151",
+            "symbol": "Index1_Seg12_Time",
+            "dataType": "U32",
+            "desc": "第12段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0154",
+            "symbol": "Index1_Seg13_Temp",
+            "dataType": "U16",
+            "desc": "第13段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0154",
+            "symbol": "Index1_Seg13_LaserPower",
+            "dataType": "U16",
+            "desc": "第13段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0154",
+            "symbol": "Index1_Seg13_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第13段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0155",
+            "symbol": "Index1_Seg13_Time",
+            "dataType": "U32",
+            "desc": "第13段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0158",
+            "symbol": "Index1_Seg14_Temp",
+            "dataType": "U16",
+            "desc": "第14段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0158",
+            "symbol": "Index1_Seg14_LaserPower",
+            "dataType": "U16",
+            "desc": "第14段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0158",
+            "symbol": "Index1_Seg14_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第14段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0159",
+            "symbol": "Index1_Seg14_Time",
+            "dataType": "U32",
+            "desc": "第14段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x015c",
+            "symbol": "Index1_Seg15_Temp",
+            "dataType": "U16",
+            "desc": "第15段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x015c",
+            "symbol": "Index1_Seg15_LaserPower",
+            "dataType": "U16",
+            "desc": "第15段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x015c",
+            "symbol": "Index1_Seg15_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第15段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x015d",
+            "symbol": "Index1_Seg15_Time",
+            "dataType": "U32",
+            "desc": "第15段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0160",
+            "symbol": "Index1_Seg16_Temp",
+            "dataType": "U16",
+            "desc": "第16段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "1"
+        },
+        {
+            "register": "0x0160",
+            "symbol": "Index1_Seg16_LaserPower",
+            "dataType": "U16",
+            "desc": "第16段段末期望激光功率（光功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "2"
+        },
+        {
+            "register": "0x0160",
+            "symbol": "Index1_Seg16_InputElectricPower",
+            "dataType": "U16",
+            "desc": "第16段输入电功率（电功率反馈模式），范围：[1-100]，单位：%",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "3"
+        },
+        {
+            "register": "0x0161",
+            "symbol": "Index1_Seg16_Time",
+            "dataType": "U32",
+            "desc": "第16段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "writable": true,
+            "scale": "0.001",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0114",
+            "symbol": "SystemSelectIndex",
+            "dataType": "U16",
+            "desc": "选取所需的控制序列编号【1-8】",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x0115",
+            "symbol": "ManualSoftwareTriggersOnce",
+            "dataType": "U16",
+            "desc": "手动软件触发一次，写入0x5a12 执行一次，写入0x1234 则立即停止（PWM=0， DAC=0），其他数值无执行",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "0"
+        },
+        {
             "register": "0x0100",
             "symbol": "Emissivity",
             "dataType": "F32",
@@ -32,6 +662,60 @@
             "symbol": "Dac10V_Temp",
             "dataType": "U16",
             "desc": "DAC输出10V时对应的温度，单位：摄氏度",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1003",
+            "symbol": "TempFeedbackPidParmP",
+            "dataType": "U16",
+            "desc": "PID温度反馈系数P设置范围：[1-65535],内部转换为 [1-65.535]",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1004",
+            "symbol": "TempFeedbackPidParmI",
+            "dataType": "U16",
+            "desc": "PID温度反馈系数I设置范围：[1-65535]",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1005",
+            "symbol": "TempFeedbackPidParmD",
+            "dataType": "U16",
+            "desc": "PID温度反馈系数D设置范围：[1-65535]",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1006",
+            "symbol": "LaserPowerFeedbackPidParmP",
+            "dataType": "U16",
+            "desc": "PID光功率反馈系数P设置范围： [1-65535]",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1007",
+            "symbol": "LaserPowerFeedbackPidParmI",
+            "dataType": "U16",
+            "desc": "PID光功率反馈系数I设置范围： [1-65535]",
+            "writable": true,
+            "scale": "1.0",
+            "availableInMode": "0"
+        },
+        {
+            "register": "0x1008",
+            "symbol": "LaserPowerFeedbackPidParmD",
+            "dataType": "U16",
+            "desc": "PID光功率反馈系数D设置范围： [1-65535]",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "0"
@@ -100,642 +784,12 @@
             "availableInMode": "0"
         },
         {
-            "register": "0x0114",
-            "symbol": "SystemSelectIndex",
-            "dataType": "U16",
-            "desc": "选取所需的控制序列编号【1-8】",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0115",
-            "symbol": "ManualSoftwareTriggersOnce",
-            "dataType": "U16",
-            "desc": "手动软件触发一次，写入0x5a12 执行一次，写入0x1234 则立即停止（PWM=0， DAC=0），其他数值无执行",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
             "register": "0x0116",
             "symbol": "RecordTimeOffset",
             "dataType": "U16",
             "desc": "焊接温度记录的偏移时间，单位：毫秒",
             "writable": true,
             "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0120",
-            "symbol": "Index1_OperationType",
-            "dataType": "U16",
-            "desc": "操作模式：1：外控（计算机板卡输出来控制），2：内控控点焊（软件命令，脚踏板，IO触发），3：保留，4：内控控拖焊（软件命令，脚踏板，IO触发），其他：保留，没有使用",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0121",
-            "symbol": "Index1_ControlFeedbackMode",
-            "dataType": "U16",
-            "desc": "设置控制反馈方式：（加工模式）1：目标温度反馈，2：激光功率反馈，3：激光器恒定输入功率，其他：保留备用",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": 0
-        },
-        {
-            "register": "0x0122",
-            "symbol": "Index1_TotalSegments",
-            "dataType": "U16",
-            "desc": "总有效段数，范围： 1-16  （最大16段）",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0123",
-            "symbol": "Index1_UpperLimitOfPower",
-            "dataType": "U16",
-            "desc": "（当前索引内）焊接功率上限：% 范围：0-100",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0124",
-            "symbol": "Index1_Seg1_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第1段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0124",
-            "symbol": "Index1_Seg1_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第1段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0124",
-            "symbol": "Index1_Seg1_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第1段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0125",
-            "symbol": "Index1_Seg1_Time",
-            "dataType": "U32",
-            "desc": "第1段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0128",
-            "symbol": "Index1_Seg2_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第2段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0128",
-            "symbol": "Index1_Seg2_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第2段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0128",
-            "symbol": "Index1_Seg2_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第2段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0129",
-            "symbol": "Index1_Seg2_Time",
-            "dataType": "U32",
-            "desc": "第2段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x012c",
-            "symbol": "Index1_Seg3_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第3段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x012c",
-            "symbol": "Index1_Seg3_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第3段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x012c",
-            "symbol": "Index1_Seg3_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第3段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x012d",
-            "symbol": "Index1_Seg3_Time",
-            "dataType": "U32",
-            "desc": "第3段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0130",
-            "symbol": "Index1_Seg4_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第4段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0130",
-            "symbol": "Index1_Seg4_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第4段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0130",
-            "symbol": "Index1_Seg4_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第4段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0131",
-            "symbol": "Index1_Seg4_Time",
-            "dataType": "U32",
-            "desc": "第4段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0134",
-            "symbol": "Index1_Seg5_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第5段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0134",
-            "symbol": "Index1_Seg5_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第5段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0134",
-            "symbol": "Index1_Seg5_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第5段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0135",
-            "symbol": "Index1_Seg5_Time",
-            "dataType": "U32",
-            "desc": "第5段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0138",
-            "symbol": "Index1_Seg6_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第6段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0138",
-            "symbol": "Index1_Seg6_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第6段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0138",
-            "symbol": "Index1_Seg6_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第6段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0139",
-            "symbol": "Index1_Seg6_Time",
-            "dataType": "U32",
-            "desc": "第6段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x013c",
-            "symbol": "Index1_Seg7_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第7段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x013c",
-            "symbol": "Index1_Seg7_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第7段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x013c",
-            "symbol": "Index1_Seg7_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第7段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x013d",
-            "symbol": "Index1_Seg7_Time",
-            "dataType": "U32",
-            "desc": "第7段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0140",
-            "symbol": "Index1_Seg8_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第8段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0140",
-            "symbol": "Index1_Seg8_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第8段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0140",
-            "symbol": "Index1_Seg8_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第8段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0141",
-            "symbol": "Index1_Seg8_Time",
-            "dataType": "U32",
-            "desc": "第8段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0144",
-            "symbol": "Index1_Seg9_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第9段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0144",
-            "symbol": "Index1_Seg9_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第9段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0144",
-            "symbol": "Index1_Seg9_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第9段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0145",
-            "symbol": "Index1_Seg9_Time",
-            "dataType": "U32",
-            "desc": "第9段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0148",
-            "symbol": "Index1_Seg10_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第10段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0148",
-            "symbol": "Index1_Seg10_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第10段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0148",
-            "symbol": "Index1_Seg10_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第10段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0149",
-            "symbol": "Index1_Seg10_Time",
-            "dataType": "U32",
-            "desc": "第10段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x014c",
-            "symbol": "Index1_Seg11_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第11段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x014c",
-            "symbol": "Index1_Seg11_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第11段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x014c",
-            "symbol": "Index1_Seg11_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第11段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0149",
-            "symbol": "Index1_Seg11_Time",
-            "dataType": "U32",
-            "desc": "第11段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0150",
-            "symbol": "Index1_Seg12_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第12段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0150",
-            "symbol": "Index1_Seg12_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第12段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0150",
-            "symbol": "Index1_Seg12_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第12段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0151",
-            "symbol": "Index1_Seg12_Time",
-            "dataType": "U32",
-            "desc": "第12段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0154",
-            "symbol": "Index1_Seg13_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第13段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0154",
-            "symbol": "Index1_Seg13_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第13段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0154",
-            "symbol": "Index1_Seg13_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第13段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0155",
-            "symbol": "Index1_Seg13_Time",
-            "dataType": "U32",
-            "desc": "第13段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0158",
-            "symbol": "Index1_Seg14_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第14段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0158",
-            "symbol": "Index1_Seg14_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第14段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0158",
-            "symbol": "Index1_Seg14_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第14段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0159",
-            "symbol": "Index1_Seg14_Time",
-            "dataType": "U32",
-            "desc": "第14段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x015c",
-            "symbol": "Index1_Seg15_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第15段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x015c",
-            "symbol": "Index1_Seg15_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第15段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x015c",
-            "symbol": "Index1_Seg15_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第15段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x015d",
-            "symbol": "Index1_Seg15_Time",
-            "dataType": "U32",
-            "desc": "第15段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x0160",
-            "symbol": "Index1_Seg16_Temp",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第16段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "1"
-        },
-        {
-            "register": "0x0160",
-            "symbol": "Index1_Seg16_LaserPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第16段段末期望激光功率 （光功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "2"
-        },
-        {
-            "register": "0x0160",
-            "symbol": "Index1_Seg16_InputElectricPower",
-            "dataType": "U16",
-            "desc": "根据控制反馈方式来确定所需的目标数值：第16段输入电功率  （电功率反馈模式），范围：[1-100]，单位：%",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "3"
-        },
-        {
-            "register": "0x0161",
-            "symbol": "Index1_Seg16_Time",
-            "dataType": "U32",
-            "desc": "第16段时间（t%65536），范围：[0-65535]，时间单位：S",
-            "writable": true,
-            "scale": "0.001",
             "availableInMode": "0"
         },
         {
@@ -761,60 +815,6 @@
             "symbol": "ModBusID",
             "dataType": "U16",
             "desc": "ModBus的ID设置：1.只有低8bit有效，范围：[1-254]，不能是0和255；2.使用0xff的ID可以在点对点的时候读写操作；3.更改此设置后在写入Flash重启后生效",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x1003",
-            "symbol": "TempFeedbackPidParmP",
-            "dataType": "U16",
-            "desc": "PID温度反馈系数P设置范围：[1-65535],内部转换为 [1-65.535]",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x1004",
-            "symbol": "TempFeedbackPidParmI",
-            "dataType": "U16",
-            "desc": "PID温度反馈系数I设置范围：[1-65535]",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x1005",
-            "symbol": "TempFeedbackPidParmD",
-            "dataType": "U16",
-            "desc": "PID温度反馈系数D设置范围：[1-65535]",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x1006",
-            "symbol": "LaserPowerFeedbackPidParmP",
-            "dataType": "U16",
-            "desc": "PID光功率反馈系数P设置范围： [1-65535]",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x1007",
-            "symbol": "LaserPowerFeedbackPidParmI",
-            "dataType": "U16",
-            "desc": "PID光功率反馈系数I设置范围： [1-65535]",
-            "writable": true,
-            "scale": "1.0",
-            "availableInMode": "0"
-        },
-        {
-            "register": "0x1008",
-            "symbol": "LaserPowerFeedbackPidParmD",
-            "dataType": "U16",
-            "desc": "PID光功率反馈系数D设置范围： [1-65535]",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "0"
