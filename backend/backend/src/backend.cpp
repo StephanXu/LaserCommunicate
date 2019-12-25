@@ -3,6 +3,7 @@
 
 #include "backend.h"
 #include <cpprest/http_client.h>
+#include <spdlog/sinks/rotating_file_sink.h>
 
 #include "InterfaceController.hpp"
 #include "SerialComController.hpp"
@@ -28,8 +29,12 @@ std::unique_ptr<UartModbus> MakeUartModbus()
 
 void InitLog()
 {
-	auto console = spdlog::stderr_color_mt("console");
-	spdlog::set_default_logger(console);
+#if _DEBUG
+	auto logger = spdlog::rotating_logger_mt("file_logger", "backend.log", 1024 * 1024 * 5, 3);
+#else
+	auto logger = spdlog::stderr_color_mt("console");
+#endif
+	spdlog::set_default_logger(logger);
 	spdlog::set_pattern("[%T.%e] [%-5t] %^[%l]%$  %v");
 	spdlog::set_level(spdlog::level::info);
 }
