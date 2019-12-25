@@ -62,7 +62,7 @@ let store = new Vuex.Store({
         setFocus(state, isFocus) {
             state.isFocus = isFocus
         },
-        setMode(state, mode){
+        setMode(state, mode) {
             state.mode = mode
         }
     },
@@ -77,34 +77,56 @@ let store = new Vuex.Store({
         // 设置功能参数列表表格数据
         setSingleData(context, rule) {
             let index = context.state.tableData.findIndex((item) => (item.symbol === rule.symbol))
-            post('/api/interface/' + context.state.tableData[index].id,JSON.stringify({value: rule.value})
-            , { headers: { "Content-Type": "application/json" } }).then(() => {
-                Message.success("设置成功！"); 
-            }).catch(() => {
-                // Message.warning("获取数据失败,请先选择串口连接！");
-            })
+            post('/api/interface/' + context.state.tableData[index].id, JSON.stringify({ value: rule.value })
+                , { headers: { "Content-Type": "application/json" } }).then(() => {
+                    Message.success("设置成功！");
+                }).catch(() => {
+                    // Message.warning("获取数据失败,请先选择串口连接！");
+                })
         },
         // 选择模式
-        setCurtMode(context, mode){
-            context.dispatch('setSingleData',{symbol:'Index1_ControlFeedbackMode', value: mode})
+        setCurtMode(context, mode) {
+            context.dispatch('setSingleData', { symbol: 'Index1_ControlFeedbackMode', value: mode })
             context.commit('setMode', mode)
         },
         // 获取功能参数列表表格数据
         getTableData(context) {
-            get("/api/interface/all?mode="+context.state.mode, { mode: context.getMode }
+            get("/api/interface/all?mode=" + context.state.mode, { mode: context.getMode }
                 , { headers: { "Content-Type": "application/json" } }
             ).then(response => {
                 var res = response.content
-                for (let i = 0; i < res.length; i++) {
+                // for (let i = 0; i < res.length; i++) {
+                for (let i = 0; i < 6; i++) {
                     Vue.set(res[i], 'index', i + 1)
-                    res[i].data=Number(res[i].data)*parseFloat(res[i].scale).toFixed(3)
-        } 
-                context.commit('getTableData', res)  
+                    if (parseFloat(res[i].scale) < 1) {
+                        let endianCvt = (num) => {
+                            let n = Number(num) >>> 0
+                            let high = (n >> 16) & 0x0000ffff
+                            console.log('low',high.toString(10))
+                            let low = (n) & 0x0000ffff
+                            console.log('high',low.toString(10))
+                            return ((low << 16 | high) >>> 0)
+                        }
+                        // let res1 = 0;
+                        // let n = Number(res[i].data) >>> 0;
+                        // res1 |= (n << 24) & 0xff000000;
+                        // res1 |= (n << 8) & 0x00ff0000;
+                        // res1 |= (n >> 8) & 0x0000ff00;
+                        // res1 |= (n >> 24) & 0x000000ff;
+                        // let a= res1 >>> 0
+                        console.log('1',endianCvt(res[i].data))
+                        res[i].data = (endianCvt(res[i].data) * parseFloat(res[i].scale)).toFixed(3)
+                    } else {
+                        res[i].data = Number(res[i].data) * parseFloat(res[i].scale)
+                    }
+                }
+                context.commit('getTableData', res)
             }).catch(() => {
                 // Message.warning("获取数据失败,请先选择串口连接！");
             })
             // settingsStore.setRules(context.state.tableData)
         },
+
         // 初始化连接
         initConnect(context, value) {
             context.commit('connectPort', value)
