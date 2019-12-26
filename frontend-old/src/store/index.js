@@ -99,23 +99,7 @@ let store = new Vuex.Store({
                 for (let i = 0; i < 6; i++) {
                     Vue.set(res[i], 'index', i + 1)
                     if (parseFloat(res[i].scale) < 1) {
-                        let endianCvt = (num) => {
-                            let n = Number(num) >>> 0
-                            let high = (n >> 16) & 0x0000ffff
-                            console.log('low',high.toString(10))
-                            let low = (n) & 0x0000ffff
-                            console.log('high',low.toString(10))
-                            return ((low << 16 | high) >>> 0)
-                        }
-                        // let res1 = 0;
-                        // let n = Number(res[i].data) >>> 0;
-                        // res1 |= (n << 24) & 0xff000000;
-                        // res1 |= (n << 8) & 0x00ff0000;
-                        // res1 |= (n >> 8) & 0x0000ff00;
-                        // res1 |= (n >> 24) & 0x000000ff;
-                        // let a= res1 >>> 0
-                        console.log('1',endianCvt(res[i].data))
-                        res[i].data = (endianCvt(res[i].data) * parseFloat(res[i].scale)).toFixed(3)
+                        res[i].data = (Number(res[i].data) * parseFloat(res[i].scale)).toFixed(3)
                     } else {
                         res[i].data = Number(res[i].data) * parseFloat(res[i].scale)
                     }

@@ -106,10 +106,6 @@ export default {
             symbol: this.row.symbol,
             value: (Math.round(Number(this.formData.dataValue))/parseFloat(this.row.scale)).toString()
           };
-          if(parseFloat(this.row.scale)<1){
-            paramsa.value=(this.EndianCvt(Math.round(Number(this.formData.dataValue)/parseFloat(this.row.scale)))).toString()
-            console.log('send',paramsa.value)
-          }
           this.$store.dispatch("setSingleData", paramsa);
           this.resetForm(formName);
         }
@@ -127,23 +123,6 @@ export default {
         }
       }
     },
-        EndianCvt(num) {
-            let n = Number(num) >>> 0
-            let high = (n >> 16) & 0x0000ffff
-            console.log('h',high)
-            let low = (n) & 0x0000ffff
-            // high=0x5678,low=0x1234
-            return ((low << 16 | high) >>> 0)
-        },
-        EndianCvtByBytes(num) {
-            let res=0;
-            let n = Number(num) >>> 0;
-            res|=(n << 24) & 0xff000000 ;
-            res|=(n << 8 ) & 0x00ff0000;
-            res|=(n >> 8 ) & 0x0000ff00;
-            res|=(n >> 24) & 0x000000ff;
-            return res>>>0
-        },
     resetForm(formName) {
       this.$refs[formName].resetFields();
       this.$refs[formName].clearValidate();
