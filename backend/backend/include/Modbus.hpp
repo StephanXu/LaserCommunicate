@@ -388,12 +388,13 @@ private:
 	inline RetT GetNumFromBuffer(const BufferType* buffer, size_t length) const
 	{
 		RetT result = 0;
-		for (int i{}; i < sizeof(RetT) && i < length; ++i)
+		for (int i{}; i < sizeof(RetT) / sizeof(BufferType) && i < length; ++i)
 		{
 			result += (buffer[i] << (sizeof(BufferType) * 8 * i));
 		}
 		return result;
 	}
+
 	/**
 	 * @fn	template<> inline float UartModbus::GetNumFromBuffer(const uint16_t* buffer, size_t length) const
 	 *
@@ -423,9 +424,9 @@ private:
 	template<typename ValueType, typename BufferType>
 	inline void SetNumToBuffer(BufferType* buffer, size_t length, const ValueType value) const
 	{
-		for (int i{}; i < sizeof(ValueType) && i < length; ++i)
+		for (int i{}; i < sizeof(ValueType) / sizeof(BufferType) && i < length; ++i)
 		{
-			buffer[i] = value >> (i * 8);
+			buffer[i] = value >> (sizeof(BufferType) * i * 8);
 		}
 	}
 
