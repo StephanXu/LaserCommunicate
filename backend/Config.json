@@ -13,7 +13,7 @@
             "register": "0x0121",
             "symbol": "Index1_ControlFeedbackMode",
             "dataType": "U16",
-            "desc": "设置控制反馈方式：（加工模式）1：目标温度反馈，2：激光功率反馈，3：激光器恒定输入功率，其他：保留备用",
+            "desc": "设置控制反馈方式：（加工模式）1：温度反馈模式，2：光功率反馈模式，3：电功率反馈模式，其他：保留备用",
             "writable": true,
             "scale": "1.0",
             "availableInMode": 0
@@ -40,7 +40,7 @@
             "register": "0x0124",
             "symbol": "Index1_Seg1_Temp",
             "dataType": "U16",
-            "desc": "第1段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第1段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -67,7 +67,7 @@
             "register": "0x0125",
             "symbol": "Index1_Seg1_Time",
             "dataType": "U32",
-            "desc": "第1段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第1段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -76,7 +76,7 @@
             "register": "0x0128",
             "symbol": "Index1_Seg2_Temp",
             "dataType": "U16",
-            "desc": "第2段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第2段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -103,7 +103,7 @@
             "register": "0x0129",
             "symbol": "Index1_Seg2_Time",
             "dataType": "U32",
-            "desc": "第2段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第2段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -112,7 +112,7 @@
             "register": "0x012c",
             "symbol": "Index1_Seg3_Temp",
             "dataType": "U16",
-            "desc": "第3段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第3段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -139,7 +139,7 @@
             "register": "0x012d",
             "symbol": "Index1_Seg3_Time",
             "dataType": "U32",
-            "desc": "第3段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第3段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -148,7 +148,7 @@
             "register": "0x0130",
             "symbol": "Index1_Seg4_Temp",
             "dataType": "U16",
-            "desc": "第4段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第4段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -175,7 +175,7 @@
             "register": "0x0131",
             "symbol": "Index1_Seg4_Time",
             "dataType": "U32",
-            "desc": "第4段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第4段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -184,7 +184,7 @@
             "register": "0x0134",
             "symbol": "Index1_Seg5_Temp",
             "dataType": "U16",
-            "desc": "第5段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第5段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -211,7 +211,7 @@
             "register": "0x0135",
             "symbol": "Index1_Seg5_Time",
             "dataType": "U32",
-            "desc": "第5段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第5段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -220,7 +220,7 @@
             "register": "0x0138",
             "symbol": "Index1_Seg6_Temp",
             "dataType": "U16",
-            "desc": "第6段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第6段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -247,7 +247,7 @@
             "register": "0x0139",
             "symbol": "Index1_Seg6_Time",
             "dataType": "U32",
-            "desc": "第6段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第6段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -256,7 +256,7 @@
             "register": "0x013c",
             "symbol": "Index1_Seg7_Temp",
             "dataType": "U16",
-            "desc": "第7段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第7段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -283,7 +283,7 @@
             "register": "0x013d",
             "symbol": "Index1_Seg7_Time",
             "dataType": "U32",
-            "desc": "第7段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第7段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -292,7 +292,7 @@
             "register": "0x0140",
             "symbol": "Index1_Seg8_Temp",
             "dataType": "U16",
-            "desc": "第8段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第8段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -319,7 +319,7 @@
             "register": "0x0141",
             "symbol": "Index1_Seg8_Time",
             "dataType": "U32",
-            "desc": "第8段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第8段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -328,7 +328,7 @@
             "register": "0x0144",
             "symbol": "Index1_Seg9_Temp",
             "dataType": "U16",
-            "desc": "第9段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第9段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -355,7 +355,7 @@
             "register": "0x0145",
             "symbol": "Index1_Seg9_Time",
             "dataType": "U32",
-            "desc": "第9段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第9段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -364,7 +364,7 @@
             "register": "0x0148",
             "symbol": "Index1_Seg10_Temp",
             "dataType": "U16",
-            "desc": "第10段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第10段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -391,7 +391,7 @@
             "register": "0x0149",
             "symbol": "Index1_Seg10_Time",
             "dataType": "U32",
-            "desc": "第10段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第10段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -400,7 +400,7 @@
             "register": "0x014c",
             "symbol": "Index1_Seg11_Temp",
             "dataType": "U16",
-            "desc": "第11段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第11段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -427,7 +427,7 @@
             "register": "0x0149",
             "symbol": "Index1_Seg11_Time",
             "dataType": "U32",
-            "desc": "第11段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第11段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -436,7 +436,7 @@
             "register": "0x0150",
             "symbol": "Index1_Seg12_Temp",
             "dataType": "U16",
-            "desc": "第12段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第12段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -463,7 +463,7 @@
             "register": "0x0151",
             "symbol": "Index1_Seg12_Time",
             "dataType": "U32",
-            "desc": "第12段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第12段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -472,7 +472,7 @@
             "register": "0x0154",
             "symbol": "Index1_Seg13_Temp",
             "dataType": "U16",
-            "desc": "第13段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第13段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -499,7 +499,7 @@
             "register": "0x0155",
             "symbol": "Index1_Seg13_Time",
             "dataType": "U32",
-            "desc": "第13段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第13段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -508,7 +508,7 @@
             "register": "0x0158",
             "symbol": "Index1_Seg14_Temp",
             "dataType": "U16",
-            "desc": "第14段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第14段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -535,7 +535,7 @@
             "register": "0x0159",
             "symbol": "Index1_Seg14_Time",
             "dataType": "U32",
-            "desc": "第14段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第14段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -544,7 +544,7 @@
             "register": "0x015c",
             "symbol": "Index1_Seg15_Temp",
             "dataType": "U16",
-            "desc": "第15段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第15段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -571,7 +571,7 @@
             "register": "0x015d",
             "symbol": "Index1_Seg15_Time",
             "dataType": "U32",
-            "desc": "第15段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第15段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
@@ -580,7 +580,7 @@
             "register": "0x0160",
             "symbol": "Index1_Seg16_Temp",
             "dataType": "U16",
-            "desc": "第16段段末期望温度（温度反馈模式），范围： [100-600]，单位：摄氏度",
+            "desc": "第16段段末期望温度（温度反馈模式），范围： [100-400]，单位：摄氏度",
             "writable": true,
             "scale": "1.0",
             "availableInMode": "1"
@@ -607,7 +607,7 @@
             "register": "0x0161",
             "symbol": "Index1_Seg16_Time",
             "dataType": "U32",
-            "desc": "第16段时间（t%65536），范围：[0-65535]，时间单位：s",
+            "desc": "第16段时间（t%65.536），范围：[0-65.535]，时间单位：ms",
             "writable": true,
             "scale": "0.001",
             "availableInMode": "0"
