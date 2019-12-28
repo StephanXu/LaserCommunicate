@@ -95,8 +95,7 @@ let store = new Vuex.Store({
                 , { headers: { "Content-Type": "application/json" } }
             ).then(response => {
                 var res = response.content
-                // for (let i = 0; i < res.length; i++) {
-                for (let i = 0; i < 6; i++) {
+                for (let i = 0; i < res.length; i++) {
                     Vue.set(res[i], 'index', i + 1)
                     if (parseFloat(res[i].scale) < 1) {
                         res[i].data = (Number(res[i].data) * parseFloat(res[i].scale)).toFixed(3)

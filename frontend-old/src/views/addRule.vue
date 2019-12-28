@@ -104,7 +104,7 @@ export default {
         } else {
           var paramsa = {
             symbol: this.row.symbol,
-            value: (Math.round(Number(this.formData.dataValue))/parseFloat(this.row.scale)).toString()
+            value: (Number(this.formData.dataValue)/parseFloat(this.row.scale)).toString()
           };
           this.$store.dispatch("setSingleData", paramsa);
           this.resetForm(formName);

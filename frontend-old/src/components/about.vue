@@ -7,7 +7,7 @@
           width="250px"
           style="filter: drop-shadow(0px 0px 14.4px rgba(0, 0, 0, 0.4)"
         />
-        <h1>光能仪表盘（厂家版）</h1>
+        <h1>测温控制软件（测试版）</h1>
         <p>版本：1.0.0 evaluate</p>
 
         <p>Author：Stephan Xu, Owen Xiao</p>

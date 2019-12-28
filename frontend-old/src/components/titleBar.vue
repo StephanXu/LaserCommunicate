@@ -3,7 +3,7 @@
     <div :class="{'app-icon':true,'window-lost-focus':!getFocus}">
       <i class="codicon codicon-list-flat" style="line-height:35px"></i>
     </div>
-    <a :class="{'title-text':true,'window-lost-focus':!getFocus}">光能仪表盘</a>
+    <a :class="{'title-text':true,'window-lost-focus':!getFocus}">武汉松盛光电科技有限公司</a>
     <div class="control-btn-container" :style="controlButtonContainerWidth">
       <a :class="controlButtonClass" @click="controlBtn('mini')">
         <i class="codicon codicon-chrome-minimize" style="line-height:35px"></i>
