@@ -10,7 +10,7 @@ const path = require('path')
 const url = require('url')
 const configPath = app.getPath('userData');
 let mainWindow;
-
+process.env.NODE_ENV = 'production'
 const initConfig =
     '{ \
     "rules": []\

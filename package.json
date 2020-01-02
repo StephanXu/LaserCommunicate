@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "./node_modules/.bin/electron-builder --win --x64"
+    "dist": "electron-builder --win --x64"
   },
   "author": "",
   "license": "ISC",
